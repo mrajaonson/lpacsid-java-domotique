@@ -4,12 +4,14 @@
  */
 package fr.javacnam.domotique.servlets;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -28,8 +30,19 @@ public class Home extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                ServletContext contexte = getServletContext();
-        contexte.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
+
+        HttpSession session = request.getSession();
+        ServletContext contexte = getServletContext();
+        RequestDispatcher dispatcher;
+        boolean isAuth = (boolean) session.getAttribute("isAuth");
+
+        if (isAuth) {
+            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+        } else {
+            dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+        }
+
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

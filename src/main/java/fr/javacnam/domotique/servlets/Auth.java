@@ -47,8 +47,19 @@ public class Auth extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
         ServletContext contexte = getServletContext();
-        contexte.getRequestDispatcher("/jsp/auth.jsp").forward(request, response);
+        RequestDispatcher dispatcher;
+        boolean isAuth = (boolean) session.getAttribute("isAuth");
+
+        if (isAuth) {
+            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+        } else {
+            dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+        }
+
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -73,8 +84,8 @@ public class Auth extends HttpServlet {
         // Authentifaction du user
         boolean isAuth = userDao.validateUser(username, password);
 
-        if (isAuth == true) {
-            session.setAttribute("isAuth", true);
+        if (isAuth) {
+            session.setAttribute("isAuth", isAuth);
             dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
         } else {
             request.setAttribute("loginError", "Login et/ou mot de passe incorrect");
