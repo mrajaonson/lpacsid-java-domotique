@@ -4,10 +4,24 @@
  */
 package fr.javacnam.domotique.dao;
 
+import fr.javacnam.domotique.beans.User;
+import java.util.List;
+
 /**
  *
  * @author rajaonson
  */
-class UserDao {
+public interface UserDao {
+
+    public User createUser(User user);
+
+    public User readUser(String username);
+
+    public User updateUser(User user);
+
+    public void deleteUser(String username);
     
+    public boolean validateUser(String username, String password);
+
+    public List<User> getAllUsers();
 }

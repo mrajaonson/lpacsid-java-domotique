@@ -4,12 +4,19 @@
  */
 package fr.javacnam.domotique.servlets;
 
+import fr.javacnam.domotique.dao.DaoFactory;
+import fr.javacnam.domotique.dao.UserDao;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,22 +24,18 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class Auth extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        ServletContext contexte = getServletContext();
-        contexte.getRequestDispatcher("/jsp/auth.jsp").forward(request, response);
+    private UserDao userDao;
+
+    public void init() throws ServletException {
+        DaoFactory daoFactory;
+        try {
+            daoFactory = DaoFactory.getInstance();
+            this.userDao = daoFactory.getUserDao();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -44,7 +47,8 @@ public class Auth extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ServletContext contexte = getServletContext();
+        contexte.getRequestDispatcher("/jsp/auth.jsp").forward(request, response);
     }
 
     /**
@@ -58,7 +62,25 @@ public class Auth extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        HttpSession session = request.getSession();
+        ServletContext contexte = getServletContext();
+        RequestDispatcher dispatcher;
+
+        String username = request.getParameter("login");
+        String password = request.getParameter("pass");
+
+        // Authentifaction du user
+        boolean isAuth = userDao.validateUser(username, password);
+
+        if (isAuth == true) {
+            session.setAttribute("isAuth", true);
+            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+        } else {
+            request.setAttribute("loginError", "Login et/ou mot de passe incorrect");
+            dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+        }
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -69,6 +91,6 @@ public class Auth extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

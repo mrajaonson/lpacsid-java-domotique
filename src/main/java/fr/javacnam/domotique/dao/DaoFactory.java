@@ -24,15 +24,17 @@ public class DaoFactory {
         this.password = password;
     }
 
-    public static DaoFactory getInstance() {
+    public static DaoFactory getInstance() throws SQLException {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
 
         }
+        
+        String userDB = "user";
+        String passDB = "user123";
 
-        DaoFactory instance = new DaoFactory(
-                "jdbc:mysql://localhost:3306/domotique", "root", "rootpass");
+        DaoFactory instance = new DaoFactory("jdbc:mysql://localhost:3306/domotique?allowPublicKeyRetrieval=true&useSSL=false", userDB, passDB);
         return instance;
     }
 

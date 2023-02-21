@@ -16,6 +16,7 @@
         <div class="container" style="width: 30%; margin-top: 5em">
             <form class="box" action="Auth" method="post">
                 <h1 class="title">Connexion</h1>
+                <p class="subtitle is-6 has-text-danger">${loginError}</p>
                 <div class="field">
                     <p class="control has-icons-left">
                         <input class="input" type="text" id="login" name="login" required placeholder="Login">
@@ -32,7 +33,7 @@
                         </span>
                     </p>
                 </div>
-                <input class="button is-success" type="submit" value="Se connecter" name="connexion">
+                <input class="button is-success" type="submit" value="Se connecter" name="auth">
             </form>
         </div>
     </body>

@@ -10,23 +10,31 @@ package fr.javacnam.domotique.beans;
  */
 public class User {
 
-    private String login;
-    private String pass;
-
-    public String getLogin() {
-        return login;
+    public User(String string, String string1) {
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    private String username;
+    private String password;
+
+    public void User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public String getPass() {
-        return pass;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }
