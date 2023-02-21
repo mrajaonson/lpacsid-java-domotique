@@ -16,6 +16,7 @@
         <div class="container" style="width: 30%; margin-top: 5em">
             <form class="box" action="Auth" method="post">
                 <h1 class="title">Connexion</h1>
+                <!--Message d'erreur en cas de login et/ou mot de passe incorrect-->
                 <p class="is-size-6 has-text-danger">${loginError}</p>
                 <div class="field">
                     <p class="control has-icons-left">

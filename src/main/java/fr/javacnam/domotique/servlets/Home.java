@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Objects;
 
 /**
  *
@@ -34,7 +35,7 @@ public class Home extends HttpServlet {
         HttpSession session = request.getSession();
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
-        boolean isAuth = (boolean) session.getAttribute("isAuth");
+        boolean isAuth = this.isAuth(session);
 
         if (isAuth) {
             dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
@@ -71,7 +72,25 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        ServletContext contexte = getServletContext();
+        RequestDispatcher dispatcher;
+
+        // Traitement déconnexion
+        String action = request.getParameter("action");
+        if ("deconnexion".equals(action)) {
+            session.setAttribute("isAuth", null);
+        }
+
+        boolean isAuth = this.isAuth(session);
+
+        if (isAuth) {
+            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+        } else {
+            dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+        }
+
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -82,6 +101,15 @@ public class Home extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
+    /**
+     * Vérifie si l'utilisateur a une session en cours
+     *
+     * @param session
+     * @return
+     */
+    private boolean isAuth(HttpSession session) {
+        return session.getAttribute("isAuth") != null ? (boolean) session.getAttribute("isAuth") : false;
+    }
 }

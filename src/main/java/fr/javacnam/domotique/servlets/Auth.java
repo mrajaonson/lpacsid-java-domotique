@@ -51,7 +51,7 @@ public class Auth extends HttpServlet {
         HttpSession session = request.getSession();
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
-        boolean isAuth = (boolean) session.getAttribute("isAuth");
+        boolean isAuth = this.isAuth(session);
 
         if (isAuth) {
             dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
@@ -82,7 +82,7 @@ public class Auth extends HttpServlet {
         String password = request.getParameter("pass");
 
         // Authentifaction du user
-        boolean isAuth = userDao.validateUser(username, password);
+        Boolean isAuth = (Boolean) userDao.validateUser(username, password);
 
         if (isAuth) {
             session.setAttribute("isAuth", isAuth);
@@ -102,6 +102,16 @@ public class Auth extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
+    }
+
+    /**
+     * Vérifie si l'utilisateur a une session en cours
+     *
+     * @param session
+     * @return
+     */
+    private boolean isAuth(HttpSession session) {
+        return session.getAttribute("isAuth") != null ? (boolean) session.getAttribute("isAuth") : false;
     }
 
 }
