@@ -46,4 +46,8 @@ public class DaoFactory {
     public UserDao getUserDao() {
         return new UserDaoImpl(this);
     }
+    
+    public MeteoDailyDao getMeteoDailyDao() {
+        return new MeteoDailyDaoImpl(this);
+    }
 }

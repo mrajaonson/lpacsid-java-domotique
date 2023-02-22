@@ -26,6 +26,7 @@ public class Auth extends HttpServlet {
 
     private UserDao userDao;
 
+    @Override
     public void init() throws ServletException {
         DaoFactory daoFactory;
         try {
@@ -83,6 +84,8 @@ public class Auth extends HttpServlet {
 
         // Authentifaction du user
         Boolean isAuth = (Boolean) userDao.validateUser(username, password);
+
+        System.out.println("isAuth " + isAuth);
 
         if (isAuth) {
             session.setAttribute("isAuth", isAuth);

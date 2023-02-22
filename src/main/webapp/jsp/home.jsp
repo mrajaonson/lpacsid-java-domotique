@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : home
     Created on : 21 févr. 2023, 14:38:52
     Author     : rajaonson
@@ -29,7 +29,6 @@
                         </article>
                         <article class="tile is-child notification is-warning">
                             <p class="title">Température extérieure</p>
-                            <p class="subtitle"></p>
                         </article>
                     </div>
                     <div class="tile is-parent">

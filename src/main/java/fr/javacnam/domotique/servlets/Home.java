@@ -4,6 +4,9 @@
  */
 package fr.javacnam.domotique.servlets;
 
+import fr.javacnam.domotique.dao.DaoFactory;
+import fr.javacnam.domotique.dao.MeteoDailyDao;
+import fr.javacnam.domotique.utils.Meteo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -12,14 +15,31 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author rajaonson
  */
 public class Home extends HttpServlet {
+
+    private MeteoDailyDao meteoDailyDao;
+
+    public void init() throws ServletException {
+        DaoFactory daoFactory;
+        try {
+            daoFactory = DaoFactory.getInstance();
+            this.meteoDailyDao = daoFactory.getMeteoDailyDao();
+        } catch (SQLException ex) {
+            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,17 +75,27 @@ public class Home extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.io.FileNotFoundException
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Date du jour
-        Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM HH:mm");
-        String formattedDate = sdf.format(now);
-        request.setAttribute("currentDate", formattedDate);
-        
-        processRequest(request, response);
+            throws ServletException, IOException, FileNotFoundException {
+        try {
+            // Date du jour
+            Date now = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM HH:mm");
+            String formattedDate = sdf.format(now);
+            request.setAttribute("currentDate", formattedDate);
+
+            // Meteo
+            Meteo meteo = new Meteo(this.meteoDailyDao);
+            meteo.fetchMeteo();
+            meteo.persistMeteo();
+
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
