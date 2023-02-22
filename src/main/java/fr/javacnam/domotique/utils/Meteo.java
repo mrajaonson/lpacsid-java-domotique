@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.FileNotFoundException;
-import java.text.NumberFormat;
 import java.text.ParseException;
 
 import com.google.gson.Gson;
@@ -18,13 +17,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.javacnam.domotique.beans.MeteoDaily;
-import fr.javacnam.domotique.dao.DaoFactory;
+import fr.javacnam.domotique.beans.MeteoHourly;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
-import fr.javacnam.domotique.servlets.Auth;
-import jakarta.servlet.ServletException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import fr.javacnam.domotique.dao.MeteoHourlyDao;
 
 /**
  *
@@ -35,9 +30,11 @@ public class Meteo {
     String data;
 
     private final MeteoDailyDao meteoDailyDao;
+    private final MeteoHourlyDao meteoHourlyDao;
 
-    public Meteo(MeteoDailyDao meteoDailyDao) {
+    public Meteo(MeteoDailyDao meteoDailyDao, MeteoHourlyDao meteoHourlyDao) {
         this.meteoDailyDao = meteoDailyDao;
+        this.meteoHourlyDao = meteoHourlyDao;
     }
 
     public void fetchMeteo() throws IOException {
@@ -81,11 +78,25 @@ public class Meteo {
             String iSunrise = sunrise[i];
             String iSunset = sunset[i];
 
-            MeteoDaily meteoDaily = new MeteoDaily(timezone, iTime, iTempMax, iTempMin, iSunrise, iSunset);            
+            MeteoDaily meteoDaily = new MeteoDaily(timezone, iTime, iTempMax, iTempMin, iSunrise, iSunset);
             this.meteoDailyDao.createMeteoDaily(meteoDaily);
         }
 
         // Hourly
+        String hourly = this.getJsonObject(json, "hourly");
+        String[] hourlyTime = this.convertJsonToArray(this.getJsonObject(hourly, "time"));
+        String[] hourlyTemperature = this.convertJsonToArray(this.getJsonObject(hourly, "temperature_2m"));
+        String[] hourlyPrecipitation = this.convertJsonToArray(this.getJsonObject(hourly, "precipitation"));
+
+        for (int i = 0; i <= 95; i++) {
+            String iTime = hourlyTime[i];
+            Double iTemperature = (Double) this.convertStringToDouble(hourlyTemperature[i]);
+            Double iPrecipitation = (Double) this.convertStringToDouble(hourlyPrecipitation[i]);
+
+            MeteoHourly meteoHourly = new MeteoHourly(timezone, iTime, iTemperature, iPrecipitation);
+            this.meteoHourlyDao.createMeteoHourly(meteoHourly);
+        }
+
     }
 
     public String getJsonObject(String json, String key) {

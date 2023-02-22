@@ -6,6 +6,7 @@ package fr.javacnam.domotique.servlets;
 
 import fr.javacnam.domotique.dao.DaoFactory;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
+import fr.javacnam.domotique.dao.MeteoHourlyDao;
 import fr.javacnam.domotique.utils.Meteo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -30,12 +31,15 @@ import java.util.logging.Logger;
 public class Home extends HttpServlet {
 
     private MeteoDailyDao meteoDailyDao;
+    private MeteoHourlyDao meteoHourlyDao;
 
+    @Override
     public void init() throws ServletException {
         DaoFactory daoFactory;
         try {
             daoFactory = DaoFactory.getInstance();
             this.meteoDailyDao = daoFactory.getMeteoDailyDao();
+            this.meteoHourlyDao = daoFactory.getMeteoHourlyDao();
         } catch (SQLException ex) {
             Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +71,6 @@ public class Home extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -88,7 +91,7 @@ public class Home extends HttpServlet {
             request.setAttribute("currentDate", formattedDate);
 
             // Meteo
-            Meteo meteo = new Meteo(this.meteoDailyDao);
+            Meteo meteo = new Meteo(this.meteoDailyDao, this.meteoHourlyDao);
             meteo.fetchMeteo();
             meteo.persistMeteo();
 

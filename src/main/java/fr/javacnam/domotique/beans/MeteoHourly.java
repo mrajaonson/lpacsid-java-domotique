@@ -12,10 +12,10 @@ public class MeteoHourly {
 
     private String timezone;
     private String time;
-    private Number temperature;
-    private Number precipitation;
+    private Double temperature;
+    private Double precipitation;
 
-    public MeteoHourly(String timezone, String time, Number temperature, Number precipitation) {
+    public MeteoHourly(String timezone, String time, Double temperature, Double precipitation) {
         this.timezone = timezone;
         this.time = time;
         this.temperature = temperature;
@@ -42,7 +42,7 @@ public class MeteoHourly {
         return temperature;
     }
 
-    public void setTemperature(Number temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
@@ -50,7 +50,7 @@ public class MeteoHourly {
         return precipitation;
     }
 
-    public void setPrecipitation(Number precipitation) {
+    public void setPrecipitation(Double precipitation) {
         this.precipitation = precipitation;
     }
 

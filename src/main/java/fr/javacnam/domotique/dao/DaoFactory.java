@@ -30,7 +30,7 @@ public class DaoFactory {
         } catch (ClassNotFoundException e) {
 
         }
-        
+
         String userDB = "user";
         String passDB = "user123";
 
@@ -46,8 +46,12 @@ public class DaoFactory {
     public UserDao getUserDao() {
         return new UserDaoImpl(this);
     }
-    
+
     public MeteoDailyDao getMeteoDailyDao() {
         return new MeteoDailyDaoImpl(this);
+    }
+
+    public MeteoHourlyDao getMeteoHourlyDao() {
+        return new MeteoHourlyDaoImpl(this);
     }
 }
