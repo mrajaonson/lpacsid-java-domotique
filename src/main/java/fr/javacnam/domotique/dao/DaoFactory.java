@@ -54,4 +54,12 @@ public class DaoFactory {
     public MeteoHourlyDao getMeteoHourlyDao() {
         return new MeteoHourlyDaoImpl(this);
     }
+    
+    public PieceDao getPieceDao() {
+        return new PieceDaoImpl(this);
+    }
+    
+    public EquipementDao getEquipementDao() {
+        return new EquipementDaoImpl(this);
+    }
 }
