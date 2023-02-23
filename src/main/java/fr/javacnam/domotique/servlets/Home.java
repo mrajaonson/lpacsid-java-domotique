@@ -4,10 +4,6 @@
  */
 package fr.javacnam.domotique.servlets;
 
-import fr.javacnam.domotique.dao.DaoFactory;
-import fr.javacnam.domotique.dao.MeteoDailyDao;
-import fr.javacnam.domotique.dao.MeteoHourlyDao;
-import fr.javacnam.domotique.utils.Meteo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -17,12 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,19 +22,8 @@ import java.util.logging.Logger;
  */
 public class Home extends HttpServlet {
 
-    private MeteoDailyDao meteoDailyDao;
-    private MeteoHourlyDao meteoHourlyDao;
-
     @Override
     public void init() throws ServletException {
-        DaoFactory daoFactory;
-        try {
-            daoFactory = DaoFactory.getInstance();
-            this.meteoDailyDao = daoFactory.getMeteoDailyDao();
-            this.meteoHourlyDao = daoFactory.getMeteoHourlyDao();
-        } catch (SQLException ex) {
-            Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -83,22 +64,12 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, FileNotFoundException {
-        try {
-            // Date du jour
-            Date now = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM HH:mm");
-            String formattedDate = sdf.format(now);
-            request.setAttribute("currentDate", formattedDate);
-
-            // Meteo
-            Meteo meteo = new Meteo(this.meteoDailyDao, this.meteoHourlyDao);
-            meteo.fetchMeteo();
-            meteo.persistMeteo();
-
-            processRequest(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // Date du jour
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM HH:mm");
+        String formattedDate = sdf.format(now);
+        request.setAttribute("currentDate", formattedDate);
+        processRequest(request, response);
     }
 
     /**

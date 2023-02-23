@@ -5,7 +5,6 @@
 package fr.javacnam.domotique.dao;
 
 import fr.javacnam.domotique.beans.User;
-import java.util.List;
 
 /**
  *
@@ -13,15 +12,14 @@ import java.util.List;
  */
 public interface UserDao {
 
-    public User createUser(User user);
+    public void createUser(User user);
 
     public User readUser(String username);
 
-    public User updateUser(User user);
+    public void updateUser(User user);
 
     public void deleteUser(String username);
-    
+
     public boolean validateUser(String username, String password);
 
-    public List<User> getAllUsers();
 }

@@ -38,7 +38,7 @@ public class MeteoHourly {
         this.time = time;
     }
 
-    public Number getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
@@ -46,7 +46,7 @@ public class MeteoHourly {
         this.temperature = temperature;
     }
 
-    public Number getPrecipitation() {
+    public Double getPrecipitation() {
         return precipitation;
     }
 

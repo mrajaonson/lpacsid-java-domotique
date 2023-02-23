@@ -12,11 +12,11 @@ import fr.javacnam.domotique.beans.MeteoHourly;
  */
 public interface MeteoHourlyDao {
 
-    public MeteoHourly createMeteoHourly(MeteoHourly meteoDaily);
+    public void createMeteoHourly(MeteoHourly meteoDaily);
 
     public MeteoHourly readMeteoHourly(String timezone, String time);
 
-    public MeteoHourly updateMeteoHourly(MeteoHourly meteoDaily);
+    public void updateMeteoHourly(MeteoHourly meteoDaily);
 
     public void deleteMeteoHourly(String timezone, String time);
 

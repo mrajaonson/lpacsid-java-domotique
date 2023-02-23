@@ -42,7 +42,7 @@ public class MeteoDaily {
         this.time = time;
     }
 
-    public Number getTemperatureMax() {
+    public Double getTemperatureMax() {
         return temperatureMax;
     }
 
@@ -50,7 +50,7 @@ public class MeteoDaily {
         this.temperatureMax = temperatureMax;
     }
 
-    public Number getTemperatureMin() {
+    public Double getTemperatureMin() {
         return temperatureMin;
     }
 

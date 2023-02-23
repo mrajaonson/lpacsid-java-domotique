@@ -20,6 +20,7 @@ import fr.javacnam.domotique.beans.MeteoDaily;
 import fr.javacnam.domotique.beans.MeteoHourly;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
 import fr.javacnam.domotique.dao.MeteoHourlyDao;
+import java.util.Arrays;
 
 /**
  *
@@ -73,8 +74,8 @@ public class Meteo {
 
         for (int i = 0; i <= 3; i++) {
             String iTime = time[i];
-            Double iTempMax = (Double) this.convertStringToDouble(temperatureMax[i]);
-            Double iTempMin = (Double) this.convertStringToDouble(temperatureMin[i]);
+            Double iTempMax = temperatureMax[i] != null ? (Double) this.convertStringToDouble(temperatureMax[i]) : 0;
+            Double iTempMin = temperatureMin[i] != null ? (Double) this.convertStringToDouble(temperatureMin[i]) : 0;
             String iSunrise = sunrise[i];
             String iSunset = sunset[i];
 
@@ -90,13 +91,12 @@ public class Meteo {
 
         for (int i = 0; i <= 95; i++) {
             String iTime = hourlyTime[i];
-            Double iTemperature = (Double) this.convertStringToDouble(hourlyTemperature[i]);
-            Double iPrecipitation = (Double) this.convertStringToDouble(hourlyPrecipitation[i]);
+            Double iTemperature = hourlyTemperature[i] != null ? (Double) this.convertStringToDouble(hourlyTemperature[i]) : 0;
+            Double iPrecipitation = hourlyPrecipitation[i] != null ? (Double) this.convertStringToDouble(hourlyPrecipitation[i]) : 0;
 
             MeteoHourly meteoHourly = new MeteoHourly(timezone, iTime, iTemperature, iPrecipitation);
             this.meteoHourlyDao.createMeteoHourly(meteoHourly);
         }
-
     }
 
     public String getJsonObject(String json, String key) {

@@ -26,22 +26,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User createUser(User user) {
+    public void createUser(User user) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public User updateUser(User user) {
+    public void updateUser(User user) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void deleteUser(String username) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<User> getAllUsers() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -52,22 +47,37 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean validateUser(String username, String password) {
-        try {
-            Connection connexion = null;
-            PreparedStatement preparedStatement = null;
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
 
+        try {
             connexion = daoFactory.getConnection();
             preparedStatement = connexion.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?;");
 
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
-            ResultSet rs = preparedStatement.executeQuery();
 
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return true;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            try {
+                if (connexion != null) {
+                    connexion.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+
+            }
         }
         return false;
     }

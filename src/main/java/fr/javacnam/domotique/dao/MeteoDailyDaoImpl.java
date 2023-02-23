@@ -24,32 +24,42 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
     }
 
     @Override
-    public MeteoDaily createMeteoDaily(MeteoDaily meteoDaily) {
-        try {
-            Connection connexion = null;
-            PreparedStatement preparedStatement = null;
+    public void createMeteoDaily(MeteoDaily meteoDaily) {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
 
+        try {
             connexion = daoFactory.getConnection();
             String query = "INSERT INTO meteodaily VALUES(?, ?, ?, ? , ?, ?);";
             preparedStatement = connexion.prepareStatement(query);
 
             preparedStatement.setString(1, meteoDaily.getTimezone());
             preparedStatement.setString(2, meteoDaily.getTime());
-            preparedStatement.setDouble(3, (double) meteoDaily.getTemperatureMax());
-            preparedStatement.setDouble(4, (double) meteoDaily.getTemperatureMin());
+            preparedStatement.setDouble(3, meteoDaily.getTemperatureMax());
+            preparedStatement.setDouble(4, meteoDaily.getTemperatureMin());
             preparedStatement.setString(5, meteoDaily.getSunrise());
             preparedStatement.setString(6, meteoDaily.getSunset());
 
-            int rowsInserted = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
 
-            if (rowsInserted > 0) {
-                System.out.println("INSERT " + meteoDaily.getTime());
-                return meteoDaily;
+            System.out.println("INSERT INTO meteodaily " + meteoDaily.getTimezone() + " " + meteoDaily.getTime());
+        } catch (SQLException e) {
+            try {
+                if (connexion != null) {
+                    connexion.rollback();
+                }
+            } catch (SQLException e2) {
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
-        return null;
     }
 
     @Override
@@ -58,7 +68,7 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
     }
 
     @Override
-    public MeteoDaily updateMeteoDaily(MeteoDaily meteoDaily) {
+    public void updateMeteoDaily(MeteoDaily meteoDaily) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

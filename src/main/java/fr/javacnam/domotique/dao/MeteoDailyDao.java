@@ -12,11 +12,11 @@ import fr.javacnam.domotique.beans.MeteoDaily;
  */
 public interface MeteoDailyDao {
 
-    public MeteoDaily createMeteoDaily(MeteoDaily meteoDaily);
+    public void createMeteoDaily(MeteoDaily meteoDaily);
 
     public MeteoDaily readMeteoDaily(String timezone, String time);
 
-    public MeteoDaily updateMeteoDaily(MeteoDaily meteoDaily);
+    public void updateMeteoDaily(MeteoDaily meteoDaily);
 
     public void deleteMeteoDaily(String timezone, String time);
 
