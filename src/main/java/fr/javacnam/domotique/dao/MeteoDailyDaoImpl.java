@@ -30,15 +30,22 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
 
         try {
             connexion = daoFactory.getConnection();
-            String query = "INSERT INTO meteodaily VALUES(?, ?, ?, ? , ?, ?);";
+            String query = "INSERT INTO meteodaily (timezone, time, temperaturemax, temperaturemin, sunrise, sunset) VALUES(?, ?, ?, ? , ?, ?) ON DUPLICATE KEY UPDATE temperaturemax = ?, temperaturemin = ?, sunrise = ?, sunset = ?;";
             preparedStatement = connexion.prepareStatement(query);
 
+            // INSERT
             preparedStatement.setString(1, meteoDaily.getTimezone());
             preparedStatement.setString(2, meteoDaily.getTime());
             preparedStatement.setDouble(3, meteoDaily.getTemperatureMax());
             preparedStatement.setDouble(4, meteoDaily.getTemperatureMin());
             preparedStatement.setString(5, meteoDaily.getSunrise());
             preparedStatement.setString(6, meteoDaily.getSunset());
+
+            // UPDATE IF DUPLICATE KEY
+            preparedStatement.setDouble(7, meteoDaily.getTemperatureMax());
+            preparedStatement.setDouble(8, meteoDaily.getTemperatureMin());
+            preparedStatement.setString(9, meteoDaily.getSunrise());
+            preparedStatement.setString(10, meteoDaily.getSunset());
 
             preparedStatement.executeUpdate();
 

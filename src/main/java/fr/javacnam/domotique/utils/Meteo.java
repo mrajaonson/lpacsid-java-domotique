@@ -20,7 +20,6 @@ import fr.javacnam.domotique.beans.MeteoDaily;
 import fr.javacnam.domotique.beans.MeteoHourly;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
 import fr.javacnam.domotique.dao.MeteoHourlyDao;
-import java.util.Arrays;
 
 /**
  *

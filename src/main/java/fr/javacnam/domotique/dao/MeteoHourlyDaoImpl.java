@@ -30,13 +30,18 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
 
         try {
             connexion = daoFactory.getConnection();
-            String query = "INSERT INTO meteohourly VALUES(?, ?, ?, ?);";
+            String query = "INSERT INTO meteohourly (timezone, time, temperature, precipitation) VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE temperature = ?, precipitation = ?;";
             preparedStatement = connexion.prepareStatement(query);
 
+            // INSERT
             preparedStatement.setString(1, meteoHourly.getTimezone());
             preparedStatement.setString(2, meteoHourly.getTime());
             preparedStatement.setDouble(3, meteoHourly.getTemperature());
             preparedStatement.setDouble(4, meteoHourly.getPrecipitation());
+
+            // UPDATE IF DUPLICATE KEY
+            preparedStatement.setDouble(5, meteoHourly.getTemperature());
+            preparedStatement.setDouble(6, meteoHourly.getPrecipitation());
 
             preparedStatement.executeUpdate();
 
