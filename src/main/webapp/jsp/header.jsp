@@ -27,7 +27,7 @@
             </a>
 
             <a class="navbar-item">
-                Documentation
+                Configuration
             </a>
 
 
