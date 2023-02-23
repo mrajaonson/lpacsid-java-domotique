@@ -14,17 +14,28 @@
         <title>Home</title>
     </head>
     <body>
-        <!--HEADER-->
+        <%-- HEADER --%>
         <jsp:include page="header.jsp" />
 
-        <!--CONTENU-->
+        <%-- affichage js date et heure --%>
+        <script>
+            function afficherDate() {
+                const now = new Date();
+                const date = now.toLocaleString();
+                document.getElementById("currentDate").innerHTML = date;
+            }
+
+            setInterval(afficherDate, 1000);
+        </script>
+
+        <%-- CONTENU --%>
         <div class="tile is-ancestor m-3">
             <div class="tile is-vertical is-8">
                 <div class="tile">
                     <div class="tile is-parent is-vertical">
                         <article class="tile is-child notification is-primary">
                             <div class="card-content">
-                                <p class="title">${currentDate}</p>
+                                <p class="title" id="currentDate"></p>
                             </div>
                         </article>
                         <article class="tile is-child notification is-warning">
@@ -61,7 +72,7 @@
             </div>
         </div>
 
-        <!--footer-->
+        <%-- FOOTER --%>
         <jsp:include page="footer.jsp" />
     </body>
 </html>
