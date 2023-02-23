@@ -12,10 +12,6 @@ import java.net.URL;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import fr.javacnam.domotique.beans.MeteoDaily;
 import fr.javacnam.domotique.beans.MeteoHourly;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
@@ -60,61 +56,54 @@ public class Meteo {
     }
 
     public void persistMeteo() throws FileNotFoundException, ParseException {
+        JsonSerializer JsonS = new JsonSerializer();
+
         String json = this.data;
-        String timezone = this.getJsonObject(json, "timezone");
+        String timezone = JsonS.getAsStringFromJson(json, "timezone");
 
         // Daily
-        String daily = this.getJsonObject(json, "daily");
-        String[] time = this.convertJsonToArray(this.getJsonObject(daily, "time"));
-        String[] temperatureMax = this.convertJsonToArray(this.getJsonObject(daily, "temperature_2m_max"));
-        String[] temperatureMin = this.convertJsonToArray(this.getJsonObject(daily, "temperature_2m_min"));
-        String[] sunrise = this.convertJsonToArray(this.getJsonObject(daily, "sunrise"));
-        String[] sunset = this.convertJsonToArray(this.getJsonObject(daily, "sunset"));
+        String daily = JsonS.getStringFromJson(json, "daily");
+        String[] time = JsonS.convertJsonToArray(JsonS.getStringFromJson(daily, "time"));
+        String[] temperatureMax = JsonS.convertJsonToArray(JsonS.getStringFromJson(daily, "temperature_2m_max"));
+        String[] temperatureMin = JsonS.convertJsonToArray(JsonS.getStringFromJson(daily, "temperature_2m_min"));
+        String[] sunrise = JsonS.convertJsonToArray(JsonS.getStringFromJson(daily, "sunrise"));
+        String[] sunset = JsonS.convertJsonToArray(JsonS.getStringFromJson(daily, "sunset"));
 
         for (int i = 0; i <= 3; i++) {
             String iTime = time[i];
-            Double iTempMax = temperatureMax[i] != null ? (Double) this.convertStringToDouble(temperatureMax[i]) : 0;
-            Double iTempMin = temperatureMin[i] != null ? (Double) this.convertStringToDouble(temperatureMin[i]) : 0;
-            String iSunrise = sunrise[i];
-            String iSunset = sunset[i];
+            Double iTempMax = temperatureMax[i] != null ? (Double) JsonS.convertStringToDouble(temperatureMax[i]) : 0;
+            Double iTempMin = temperatureMin[i] != null ? (Double) JsonS.convertStringToDouble(temperatureMin[i]) : 0;
+            String iSunrise = DateFormat.formatDateHourToHour(sunrise[i]);
+            String iSunset = DateFormat.formatDateHourToHour(sunset[i]);
 
             MeteoDaily meteoDaily = new MeteoDaily(timezone, iTime, iTempMax, iTempMin, iSunrise, iSunset);
             this.meteoDailyDao.createMeteoDaily(meteoDaily);
         }
 
         // Hourly
-        String hourly = this.getJsonObject(json, "hourly");
-        String[] hourlyTime = this.convertJsonToArray(this.getJsonObject(hourly, "time"));
-        String[] hourlyTemperature = this.convertJsonToArray(this.getJsonObject(hourly, "temperature_2m"));
-        String[] hourlyPrecipitation = this.convertJsonToArray(this.getJsonObject(hourly, "precipitation"));
+        String hourly = JsonS.getStringFromJson(json, "hourly");
+        String[] hourlyTime = JsonS.convertJsonToArray(JsonS.getStringFromJson(hourly, "time"));
+        String[] hourlyTemperature = JsonS.convertJsonToArray(JsonS.getStringFromJson(hourly, "temperature_2m"));
+        String[] hourlyPrecipitation = JsonS.convertJsonToArray(JsonS.getStringFromJson(hourly, "precipitation"));
 
         for (int i = 0; i <= 95; i++) {
             String iTime = hourlyTime[i];
-            Double iTemperature = hourlyTemperature[i] != null ? (Double) this.convertStringToDouble(hourlyTemperature[i]) : 0;
-            Double iPrecipitation = hourlyPrecipitation[i] != null ? (Double) this.convertStringToDouble(hourlyPrecipitation[i]) : 0;
+            Double iTemperature = hourlyTemperature[i] != null ? (Double) JsonS.convertStringToDouble(hourlyTemperature[i]) : 0;
+            Double iPrecipitation = hourlyPrecipitation[i] != null ? (Double) JsonS.convertStringToDouble(hourlyPrecipitation[i]) : 0;
 
             MeteoHourly meteoHourly = new MeteoHourly(timezone, iTime, iTemperature, iPrecipitation);
             this.meteoHourlyDao.createMeteoHourly(meteoHourly);
         }
     }
 
-    public String getJsonObject(String json, String key) {
-        JsonElement jsonElement = JsonParser.parseString(json);
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-
-        JsonElement value = jsonObject.get(key);
-
-        return value != null ? value.toString() : "";
-
+    public MeteoDaily fetchMeteoDaily(String timezone, String time) {
+        MeteoDaily meteoDaily = this.meteoDailyDao.readMeteoDaily(timezone, time);
+        return meteoDaily;
     }
 
-    public Number convertStringToDouble(String string) {
-        return Double.valueOf(string);
-    }
-
-    public String[] convertJsonToArray(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, String[].class);
+    public MeteoHourly fetchMeteoHourly(String timezone, String time) {
+        MeteoHourly meteoHourly = this.meteoHourlyDao.readMeteoHourly(timezone, time);
+        return meteoHourly;
     }
 
 }

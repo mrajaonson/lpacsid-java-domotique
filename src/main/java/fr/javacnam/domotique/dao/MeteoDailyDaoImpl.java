@@ -93,6 +93,7 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
                 String sunset = rs.getString("sunset");
 
                 MeteoDaily meteoDaily = new MeteoDaily(timezone, time, tempMax, tempMin, sunrise, sunset);
+                System.out.println("readMeteoDaily : " + meteoDaily.getTimezone());
                 return meteoDaily;
             }
         } catch (SQLException e) {

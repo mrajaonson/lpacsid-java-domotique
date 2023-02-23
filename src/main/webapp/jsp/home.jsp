@@ -40,6 +40,24 @@
                         </article>
                         <article class="tile is-child notification is-warning">
                             <p class="title">Température extérieure</p>
+                            <p>Aujourd'hui</p>
+                            <p>Min : ${meteoDaily.getTemperatureMin()}°C</p>
+                            <p>Max : ${meteoDaily.getTemperatureMax()}°C</p>
+                        </article>
+                        <article class="tile is-child notification is-warning">
+                            <p class="title">Ephémérides</p>
+                            <p>
+                                <span class="icon">
+                                    <i class="gg-sun"></i>
+                                </span>
+                                <span> ${meteoDaily.getSunrise()}</span>
+                            </p>
+                            <p>
+                                <span class="icon">
+                                    <i class="gg-moon"></i>
+                                </span>
+                                <span>${meteoDaily.getSunset()}</span>
+                            </p>
                         </article>
                     </div>
                     <div class="tile is-parent">
