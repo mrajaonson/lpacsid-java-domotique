@@ -55,12 +55,11 @@ public class Auth extends HttpServlet {
         boolean isAuth = this.isAuth(session);
 
         if (isAuth) {
-            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+            response.sendRedirect("Home");
         } else {
             dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+            dispatcher.forward(request, response);
         }
-
-        dispatcher.forward(request, response);
     }
 
     /**
@@ -89,12 +88,12 @@ public class Auth extends HttpServlet {
 
         if (isAuth) {
             session.setAttribute("isAuth", isAuth);
-            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+            response.sendRedirect("Home");
         } else {
             request.setAttribute("loginError", "Login et/ou mot de passe incorrect");
             dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+            dispatcher.forward(request, response);
         }
-        dispatcher.forward(request, response);
     }
 
     /**

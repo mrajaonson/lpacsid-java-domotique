@@ -45,11 +45,11 @@ public class Home extends HttpServlet {
 
         if (isAuth) {
             dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+            dispatcher.forward(request, response);
         } else {
-            dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
+            response.sendRedirect("Auth");
         }
 
-        dispatcher.forward(request, response);
     }
 
     /**
@@ -84,8 +84,6 @@ public class Home extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        ServletContext contexte = getServletContext();
-        RequestDispatcher dispatcher;
 
         // Traitement déconnexion
         String action = request.getParameter("action");
@@ -93,15 +91,7 @@ public class Home extends HttpServlet {
             session.setAttribute("isAuth", null);
         }
 
-        boolean isAuth = this.isAuth(session);
-
-        if (isAuth) {
-            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
-        } else {
-            dispatcher = contexte.getRequestDispatcher("/jsp/auth.jsp");
-        }
-
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
