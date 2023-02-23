@@ -17,11 +17,13 @@ public class Equipement {
     private Integer valeur;
     private Boolean estConnecte;
 
-    public Equipement(String utilisateur, String piece, String nom, String type) {
+    public Equipement(String utilisateur, String piece, String nom, String type, Integer valeur, Boolean estConnecte) {
         this.utilisateur = utilisateur;
         this.piece = piece;
         this.nom = nom;
         this.type = type;
+        this.valeur = valeur;
+        this.estConnecte = estConnecte;
     }
 
     public String getUtilisateur() {
@@ -64,11 +66,11 @@ public class Equipement {
         this.valeur = valeur;
     }
 
-    public Boolean getEstConnecte() {
+    public Boolean isConnected() {
         return estConnecte;
     }
 
-    public void setEstConnecte(Boolean estConnecte) {
+    public void setConnected(Boolean estConnecte) {
         this.estConnecte = estConnecte;
     }
 
