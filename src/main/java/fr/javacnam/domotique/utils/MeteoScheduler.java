@@ -59,8 +59,8 @@ public class MeteoScheduler implements ServletContextListener {
     private Date getDelay() {
         // Date et heure actuelle
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,15);
-        calendar.set(Calendar.MINUTE, 2);
+        calendar.set(Calendar.HOUR_OF_DAY,23);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
         // Si heure actuelle passée, passer à heure du jour suivant
