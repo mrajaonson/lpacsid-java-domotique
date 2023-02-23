@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,12 +61,6 @@ public class UserDaoImpl implements UserDao {
                 return true;
             }
         } catch (SQLException e) {
-            try {
-                if (connexion != null) {
-                    connexion.rollback();
-                }
-            } catch (SQLException e2) {
-            }
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {

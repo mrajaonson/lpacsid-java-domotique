@@ -7,6 +7,7 @@ package fr.javacnam.domotique.dao;
 import fr.javacnam.domotique.beans.MeteoHourly;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +46,7 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
 
             preparedStatement.executeUpdate();
 
-            System.out.println("INSERT INTO meteodaily " + meteoHourly.getTimezone() + " " + meteoHourly.getTime());
+            System.out.println("INSERT INTO meteohourly " + meteoHourly.getTimezone() + " " + meteoHourly.getTime());
         } catch (SQLException e) {
             try {
                 if (connexion != null) {
@@ -67,17 +68,111 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
 
     @Override
     public MeteoHourly readMeteoHourly(String timezone, String time) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            preparedStatement = connexion.prepareStatement("SELECT * FROM meteohourly WHERE timezone = ? AND time = ?;");
+
+            preparedStatement.setString(1, timezone);
+            preparedStatement.setString(2, time);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                Double temperature = rs.getDouble("temperature");
+                Double precipitation = rs.getDouble("precipitation");
+
+                MeteoHourly meteoHourly = new MeteoHourly(timezone, time, temperature, precipitation);
+                return meteoHourly;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+
+            }
+        }
+        return null;
     }
 
     @Override
-    public void updateMeteoHourly(MeteoHourly meteoDaily) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void updateMeteoHourly(MeteoHourly meteoHourly) {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            String query = "UPDATE meteohourly SET temperature = ?, precipitation = ? WHERE timezone = ? AND time = ?;";
+            preparedStatement = connexion.prepareStatement(query);
+
+            preparedStatement.setDouble(1, meteoHourly.getTemperature());
+            preparedStatement.setDouble(2, meteoHourly.getPrecipitation());
+            preparedStatement.setString(3, meteoHourly.getTimezone());
+            preparedStatement.setString(4, meteoHourly.getTime());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("UPDATE meteohourly " + meteoHourly.getTimezone() + " " + meteoHourly.getTime());
+        } catch (SQLException e) {
+            try {
+                if (connexion != null) {
+                    connexion.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+
     }
 
     @Override
     public void deleteMeteoHourly(String timezone, String time) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            String query = "DELETE FROM meteohourly WHERE timezone = ? AND time = ?;";
+            preparedStatement = connexion.prepareStatement(query);
+
+            preparedStatement.setString(1, timezone);
+            preparedStatement.setString(2, time);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("DELETE FROM meteohourly " + timezone + " " + time);
+            } else {
+                System.out.println("Aucun élément supprimé meteohourly " + timezone + " " + time);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
     }
 
 }
