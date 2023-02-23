@@ -57,6 +57,9 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
             Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 if (connexion != null) {
                     connexion.close();
                 }
@@ -90,6 +93,9 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 if (connexion != null) {
                     connexion.close();
                 }
@@ -129,6 +135,9 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
             Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 if (connexion != null) {
                     connexion.close();
                 }

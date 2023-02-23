@@ -61,6 +61,9 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
             Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 if (connexion != null) {
                     connexion.close();
                 }
@@ -96,6 +99,9 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
             Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 if (connexion != null) {
                     connexion.close();
                 }
@@ -138,6 +144,9 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
             Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
                 if (connexion != null) {
                     connexion.close();
                 }
