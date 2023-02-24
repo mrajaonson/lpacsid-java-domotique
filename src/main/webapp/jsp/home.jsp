@@ -11,6 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style><jsp:include page="../css/bulma.min.css" /></style>
         <style><jsp:include page="../css/css.gg.css" /></style>
+        <style><jsp:include page="../css/styles.css" /></style>
         <title>Home</title>
     </head>
     <body>
@@ -25,6 +26,7 @@
                 document.getElementById("currentDate").innerHTML = date;
             }
 
+            window.addEventListener('load', afficherDate);
             setInterval(afficherDate, 1000);
         </script>
 

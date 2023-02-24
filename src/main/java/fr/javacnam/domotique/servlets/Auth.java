@@ -88,6 +88,7 @@ public class Auth extends HttpServlet {
 
         if (isAuth) {
             session.setAttribute("isAuth", isAuth);
+            session.setAttribute("user", username);
             response.sendRedirect("Home");
         } else {
             request.setAttribute("loginError", "Login et/ou mot de passe incorrect");
@@ -112,7 +113,7 @@ public class Auth extends HttpServlet {
      * @param session
      * @return
      */
-    private boolean isAuth(HttpSession session) {
+    public boolean isAuth(HttpSession session) {
         return session.getAttribute("isAuth") != null ? (boolean) session.getAttribute("isAuth") : false;
     }
 

@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface EquipementDao {
 
-    public void createEquipement(Equipement piece);
+    public void createEquipement(Equipement equipement);
 
     public Equipement readEquipement(String utilisateur, String piece, String nom);
 
-    public void updateEquipement(Equipement piece);
+    public void updateEquipement(Equipement equipement);
 
     public void deleteEquipement(String utilisateur, String piece, String nom);
 

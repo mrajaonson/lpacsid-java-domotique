@@ -4,11 +4,9 @@
  */
 package fr.javacnam.domotique.servlets;
 
-import fr.javacnam.domotique.beans.MeteoDaily;
+import fr.javacnam.domotique.beans.Piece;
 import fr.javacnam.domotique.dao.DaoFactory;
-import fr.javacnam.domotique.dao.MeteoDailyDao;
-import fr.javacnam.domotique.dao.MeteoHourlyDao;
-import fr.javacnam.domotique.utils.Meteo;
+import fr.javacnam.domotique.dao.PieceDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -17,10 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,24 +24,18 @@ import java.util.logging.Logger;
  *
  * @author rajaonson
  */
-public class Home extends HttpServlet {
+public class Configuration extends HttpServlet {
 
-    // On utilise le timezone de Paris par défaut
-    private final String TIMEZONE = "Europe/Paris";
-
-    // DAO
-    private MeteoDailyDao meteoDailyDao;
-    private MeteoHourlyDao meteoHourlyDao;
+    private PieceDao pieceDao;
 
     @Override
     public void init() throws ServletException {
         DaoFactory daoFactory;
         try {
             daoFactory = DaoFactory.getInstance();
-            this.meteoDailyDao = daoFactory.getMeteoDailyDao();
-            this.meteoHourlyDao = daoFactory.getMeteoHourlyDao();
+            this.pieceDao = daoFactory.getPieceDao();
         } catch (SQLException ex) {
-            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -69,25 +59,11 @@ public class Home extends HttpServlet {
         boolean isAuth = auth.isAuth(session);
 
         if (isAuth) {
-            // Récupération données météo
-            // 1. Récupérer la date du jour
-            LocalDate now = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String time = now.format(formatter);
-
-            // 2. Récupérer les données en base à partir de la date du jour
-            Meteo meteo = new Meteo(this.meteoDailyDao, this.meteoHourlyDao);
-            MeteoDaily meteoDaily = meteo.fetchMeteoDaily(TIMEZONE, time);
-
-            // 3. Enregistrer dans la session les données météo
-            session.setAttribute("meteoDaily", meteoDaily);
-
-            dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
+            dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
         } else {
             response.sendRedirect("Auth");
         }
-
     }
 
     /**
@@ -97,12 +73,31 @@ public class Home extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.io.FileNotFoundException
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, FileNotFoundException {
-        processRequest(request, response);
+            throws ServletException, IOException {
+
+        ServletContext contexte = getServletContext();
+        RequestDispatcher dispatcher;
+
+        // Données session
+        HttpSession session = request.getSession();
+        Auth auth = new Auth();
+        boolean isAuth = auth.isAuth(session);
+
+        if (isAuth) {
+            // Récupération de la liste des pièces
+            String user = (String) session.getAttribute("user");
+            List<Piece> pieces = this.pieceDao.getAllPieces(user);
+
+            session.setAttribute("userPieces", pieces);
+
+            dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            response.sendRedirect("Auth");
+        }
     }
 
     /**
@@ -116,15 +111,42 @@ public class Home extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        ServletContext contexte = getServletContext();
+        RequestDispatcher dispatcher;
+
+        // Données session
         HttpSession session = request.getSession();
+        Auth auth = new Auth();
+        boolean isAuth = auth.isAuth(session);
 
-        // Traitement déconnexion
-        String action = request.getParameter("action");
-        if ("deconnexion".equals(action)) {
-            session.setAttribute("isAuth", null);
+        if (isAuth) {
+            String user = (String) session.getAttribute("user");
+
+            // Si post piece
+            String addPiece = request.getParameter("addPiece");
+            // Vérification si post vient de add-piece
+            if (addPiece != null) {
+                String nomPiece = request.getParameter("nomPiece");
+
+                // Vérification si nomPiece non null
+                if (nomPiece != null) {
+                    // Création
+                    System.out.println("CREATION : " + user + " " + nomPiece);
+                    this.pieceDao.createPiece(user, nomPiece);
+                }
+            }
+
+            // Récupération de la liste des pièces
+            List<Piece> pieces = this.pieceDao.getAllPieces(user);
+
+            session.setAttribute("userPieces", pieces);
+
+            dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            response.sendRedirect("Auth");
         }
-
-        processRequest(request, response);
     }
 
     /**
