@@ -4,8 +4,10 @@
  */
 package fr.javacnam.domotique.servlets;
 
+import fr.javacnam.domotique.beans.Equipement;
 import fr.javacnam.domotique.beans.MeteoDaily;
 import fr.javacnam.domotique.dao.DaoFactory;
+import fr.javacnam.domotique.dao.EquipementDao;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
 import fr.javacnam.domotique.dao.MeteoHourlyDao;
 import fr.javacnam.domotique.utils.Meteo;
@@ -21,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,6 +39,7 @@ public class Home extends HttpServlet {
     // DAO
     private MeteoDailyDao meteoDailyDao;
     private MeteoHourlyDao meteoHourlyDao;
+    private EquipementDao equipementDao;
 
     @Override
     public void init() throws ServletException {
@@ -44,6 +48,8 @@ public class Home extends HttpServlet {
             daoFactory = DaoFactory.getInstance();
             this.meteoDailyDao = daoFactory.getMeteoDailyDao();
             this.meteoHourlyDao = daoFactory.getMeteoHourlyDao();
+            this.equipementDao = daoFactory.getEquipementDao();
+
         } catch (SQLException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,6 +75,9 @@ public class Home extends HttpServlet {
         boolean isAuth = auth.isAuth(session);
 
         if (isAuth) {
+            // Récupération du user connecté
+            String user = (String) session.getAttribute("user");
+
             // Récupération données météo
             // 1. Récupérer la date du jour
             LocalDate now = LocalDate.now();
@@ -81,6 +90,10 @@ public class Home extends HttpServlet {
 
             // 3. Enregistrer dans la session les données météo
             session.setAttribute("meteoDaily", meteoDaily);
+
+            // Récupération de la liste des équipements
+            List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
+            session.setAttribute("userEquipements", equipements);
 
             dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
             dispatcher.forward(request, response);

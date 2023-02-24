@@ -4,9 +4,13 @@
  */
 package fr.javacnam.domotique.servlets;
 
+import fr.javacnam.domotique.beans.Equipement;
 import fr.javacnam.domotique.beans.Piece;
+import fr.javacnam.domotique.beans.TypeEquipement;
 import fr.javacnam.domotique.dao.DaoFactory;
+import fr.javacnam.domotique.dao.EquipementDao;
 import fr.javacnam.domotique.dao.PieceDao;
+import fr.javacnam.domotique.dao.TypeEquipementDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -27,6 +31,8 @@ import java.util.logging.Logger;
 public class Configuration extends HttpServlet {
 
     private PieceDao pieceDao;
+    private EquipementDao equipementDao;
+    private TypeEquipementDao typeEquipementDao;
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +40,8 @@ public class Configuration extends HttpServlet {
         try {
             daoFactory = DaoFactory.getInstance();
             this.pieceDao = daoFactory.getPieceDao();
+            this.equipementDao = daoFactory.getEquipementDao();
+            this.typeEquipementDao = daoFactory.getTypeEquipementDao();
         } catch (SQLException ex) {
             Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -87,11 +95,18 @@ public class Configuration extends HttpServlet {
         boolean isAuth = auth.isAuth(session);
 
         if (isAuth) {
+            // Récupération de la liste des types d'équopement
+            List<TypeEquipement> typesEquipement = this.typeEquipementDao.getAllTypeEquipement();
+            session.setAttribute("typesEquipement", typesEquipement);
+
             // Récupération de la liste des pièces
             String user = (String) session.getAttribute("user");
             List<Piece> pieces = this.pieceDao.getAllPieces(user);
-
             session.setAttribute("userPieces", pieces);
+
+            // Récupération de la liste des équipements
+            List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
+            session.setAttribute("userEquipements", equipements);
 
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
@@ -124,9 +139,9 @@ public class Configuration extends HttpServlet {
             String user = (String) session.getAttribute("user");
 
             // Si post piece
-            String addPiece = request.getParameter("addPiece");
-            // Vérification si post vient de add-piece
-            if (addPiece != null) {
+            String ajouterPiece = request.getParameter("ajouterPiece");
+            // Vérification si post de ajouterPiece
+            if (ajouterPiece != null) {
                 String nomPiece = request.getParameter("nomPiece");
 
                 // Vérification si nomPiece non null
@@ -137,10 +152,30 @@ public class Configuration extends HttpServlet {
                 }
             }
 
+            // Si post equipement
+            String ajouterEquipement = request.getParameter("ajouterEquipement");
+            // Vérification si post de ajouterPiece
+            if (ajouterEquipement != null) {
+                String pieceEquipement = request.getParameter("pieceEquipement");
+                String nomEquipement = request.getParameter("nomEquipement");
+                String typeEquipement = request.getParameter("typeEquipement");
+
+                // Vérification formulaire
+                if (pieceEquipement != null && nomEquipement != null) {
+                    Equipement equipement = new Equipement(user, pieceEquipement, nomEquipement, typeEquipement, 0, true);
+                    // Création
+                    System.out.println("CREATION : " + user + " " + pieceEquipement + " " + nomEquipement);
+                    this.equipementDao.createEquipement(equipement);
+                }
+            }
+
             // Récupération de la liste des pièces
             List<Piece> pieces = this.pieceDao.getAllPieces(user);
-
             session.setAttribute("userPieces", pieces);
+
+            // Récupération de la liste des équipements
+            List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
+            session.setAttribute("userEquipements", equipements);
 
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
