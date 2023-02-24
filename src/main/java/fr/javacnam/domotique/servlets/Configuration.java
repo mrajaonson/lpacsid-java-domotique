@@ -95,12 +95,14 @@ public class Configuration extends HttpServlet {
         boolean isAuth = auth.isAuth(session);
 
         if (isAuth) {
+            // Récupération du user connecté
+            String user = (String) session.getAttribute("user");
+
             // Récupération de la liste des types d'équopement
             List<TypeEquipement> typesEquipement = this.typeEquipementDao.getAllTypeEquipement();
             session.setAttribute("typesEquipement", typesEquipement);
 
             // Récupération de la liste des pièces
-            String user = (String) session.getAttribute("user");
             List<Piece> pieces = this.pieceDao.getAllPieces(user);
             session.setAttribute("userPieces", pieces);
 
