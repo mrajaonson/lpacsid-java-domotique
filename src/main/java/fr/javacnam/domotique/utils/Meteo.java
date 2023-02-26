@@ -95,15 +95,4 @@ public class Meteo {
             this.meteoHourlyDao.createMeteoHourly(meteoHourly);
         }
     }
-
-    public MeteoDaily fetchMeteoDaily(String timezone, String time) {
-        MeteoDaily meteoDaily = this.meteoDailyDao.readMeteoDaily(timezone, time);
-        return meteoDaily;
-    }
-
-    public MeteoHourly fetchMeteoHourly(String timezone, String time) {
-        MeteoHourly meteoHourly = this.meteoHourlyDao.readMeteoHourly(timezone, time);
-        return meteoHourly;
-    }
-
 }

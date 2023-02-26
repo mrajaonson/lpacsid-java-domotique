@@ -10,7 +10,6 @@ import fr.javacnam.domotique.dao.DaoFactory;
 import fr.javacnam.domotique.dao.EquipementDao;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
 import fr.javacnam.domotique.dao.MeteoHourlyDao;
-import fr.javacnam.domotique.utils.Meteo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -21,8 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,16 +76,9 @@ public class Home extends HttpServlet {
             String user = (String) session.getAttribute("user");
 
             // Récupération données météo
-            // 1. Récupérer la date du jour
-            LocalDate now = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String time = now.format(formatter);
+            MeteoDaily meteoDaily = this.meteoDailyDao.getCurrentMeteoDailyFromTimezone(TIMEZONE);
 
-            // 2. Récupérer les données en base à partir de la date du jour
-            Meteo meteo = new Meteo(this.meteoDailyDao, this.meteoHourlyDao);
-            MeteoDaily meteoDaily = meteo.fetchMeteoDaily(TIMEZONE, time);
-
-            // 3. Enregistrer dans la session les données météo
+            // Enregistrement dans la session les données météo
             session.setAttribute("meteoDaily", meteoDaily);
 
             // Récupération de la liste des équipements

@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -192,6 +195,21 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
                 Logger.getLogger(MeteoDailyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
             }
         }
+    }
+
+    @Override
+    public MeteoDaily getCurrentMeteoDailyFromTimezone(String timezone) {
+        // Récupérer la date du jour
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String time = now.format(formatter);
+        
+        return this.readMeteoDaily(timezone, time);
+    }
+
+    @Override
+    public List<MeteoDaily> getPrevisionMeteoDailyFromTimezone(String timezone) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
