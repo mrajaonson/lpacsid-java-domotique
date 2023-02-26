@@ -5,6 +5,7 @@
 package fr.javacnam.domotique.dao;
 
 import fr.javacnam.domotique.beans.MeteoHourly;
+import java.util.List;
 
 /**
  *
@@ -19,5 +20,7 @@ public interface MeteoHourlyDao {
     public void updateMeteoHourly(MeteoHourly meteoDaily);
 
     public void deleteMeteoHourly(String timezone, String time);
+    
+    public List<MeteoHourly> getDailyMeteoHourly(String timezone);
 
 }

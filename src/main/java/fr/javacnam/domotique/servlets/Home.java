@@ -6,6 +6,7 @@ package fr.javacnam.domotique.servlets;
 
 import fr.javacnam.domotique.beans.Equipement;
 import fr.javacnam.domotique.beans.MeteoDaily;
+import fr.javacnam.domotique.beans.MeteoHourly;
 import fr.javacnam.domotique.dao.DaoFactory;
 import fr.javacnam.domotique.dao.EquipementDao;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
@@ -78,10 +79,12 @@ public class Home extends HttpServlet {
             // Récupération données météo
             MeteoDaily meteoDaily = this.meteoDailyDao.getCurrentMeteoDailyFromTimezone(TIMEZONE);
             List<MeteoDaily> previsionMeteoDaily = this.meteoDailyDao.getPrevisionMeteoDailyFromTimezone(TIMEZONE);
+            List<MeteoHourly> dailyMeteoHourly = this.meteoHourlyDao.getDailyMeteoHourly(TIMEZONE);
 
             // Enregistrement dans la session les données météo
             session.setAttribute("meteoDaily", meteoDaily);
             session.setAttribute("previsionMeteoDaily", previsionMeteoDaily);
+            session.setAttribute("dailyMeteoHourly", dailyMeteoHourly);
 
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);

@@ -9,6 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -148,6 +153,12 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
 
     }
 
+    /**
+     * Time est au format "yyyy-MM-dd'T'HH:mm" ex: "2023-02-23T00:00"
+     *
+     * @param timezone
+     * @param time
+     */
     @Override
     public void deleteMeteoHourly(String timezone, String time) {
         Connection connexion = null;
@@ -182,6 +193,30 @@ public class MeteoHourlyDaoImpl implements MeteoHourlyDao {
                 Logger.getLogger(MeteoHourlyDaoImpl.class.getName()).log(Level.SEVERE, null, e);
             }
         }
+    }
+
+    @Override
+    public List<MeteoHourly> getDailyMeteoHourly(String timezone) {
+
+        List<MeteoHourly> listeMeteoDaily = new ArrayList<>();
+
+        // Récupérer la date du jour
+        LocalDate now = LocalDate.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        for (int i = 0; i <= 23; i++) {
+            String time = this.addHour(now, i);
+            listeMeteoDaily.add(this.readMeteoHourly(timezone, time));
+        }
+
+        return listeMeteoDaily;
+    }
+
+    public String addHour(LocalDate localDate, int hour) {
+        LocalDateTime localDateTime = localDate.atStartOfDay().plusHours(hour);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        return localDateTime.format(formatter);
     }
 
 }

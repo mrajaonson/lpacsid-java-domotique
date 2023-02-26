@@ -4,6 +4,10 @@
  */
 package fr.javacnam.domotique.beans;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author rajaonson
@@ -52,6 +56,13 @@ public class MeteoHourly {
 
     public void setPrecipitation(Double precipitation) {
         this.precipitation = precipitation;
+    }
+
+    public String getFormattedTime() {
+        LocalDateTime date = LocalDateTime.parse(this.time, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH'h'");
+
+        return date.format(formatter);
     }
 
 }

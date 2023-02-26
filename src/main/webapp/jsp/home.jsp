@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="fr.javacnam.domotique.beans.MeteoDaily"%>
+<%@ page import="fr.javacnam.domotique.beans.MeteoHourly"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,7 +28,7 @@
                 const date = now.toLocaleString();
                 document.getElementById("currentDate").innerHTML = date;
             }
-
+            
             window.addEventListener('load', afficherDate);
             setInterval(afficherDate, 1000);
         </script>
@@ -78,8 +79,39 @@
                                         </tr>
                                     </tbody>
                                 </table>
+
+                                <p>Par heure</p>
+
+                                <%--Affichage météo du jour--%>
+                                <div class="table-container" style="width: 25em;">
+                                    <table class="table" style="background-color: transparent;">
+                                        <% List<MeteoHourly> dailyMeteoHourly = (List<MeteoHourly>) request.getSession().getAttribute("dailyMeteoHourly"); %>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                    <% for (MeteoHourly meteoHourlyTH : dailyMeteoHourly) { %>
+                                                <td><%= meteoHourlyTH.getFormattedTime() %></td>
+                                                <%
+                                                  }
+                                                %>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th></th>
+                                                    <% for (MeteoHourly meteoHourlyTD : dailyMeteoHourly) {  %>
+                                                <td><%= meteoHourlyTD.getTemperature() %></td>
+                                                <%
+                                                  }
+                                                %>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </article>
-                            <%--Affichage des--%>
+
+                            <%--Affichage des éphémérides--%>
                             <article class="tile is-child notification is-warning">
                                 <p class="title">Ephémérides</p>
                                 <table class="table" style="background-color: transparent;">
