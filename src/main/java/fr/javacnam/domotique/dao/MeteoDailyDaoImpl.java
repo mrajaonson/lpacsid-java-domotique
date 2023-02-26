@@ -5,12 +5,14 @@
 package fr.javacnam.domotique.dao;
 
 import fr.javacnam.domotique.beans.MeteoDaily;
+import fr.javacnam.domotique.utils.DateFormat;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -203,13 +205,28 @@ public class MeteoDailyDaoImpl implements MeteoDailyDao {
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String time = now.format(formatter);
-        
+
         return this.readMeteoDaily(timezone, time);
     }
 
     @Override
     public List<MeteoDaily> getPrevisionMeteoDailyFromTimezone(String timezone) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // Durée en (jours + 1) de la prévision
+        int duree = 2;
+
+        List<MeteoDaily> listeMeteoDaily = new ArrayList<>();
+
+        // Récupérer la date du jour
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (int i = 0; i <= duree; i++) {
+            LocalDate date = now.plusDays(i);
+            String formattedDate = date.format(formatter);
+            listeMeteoDaily.add(this.readMeteoDaily(timezone, formattedDate));
+        }
+
+        return listeMeteoDaily;
     }
 
 }

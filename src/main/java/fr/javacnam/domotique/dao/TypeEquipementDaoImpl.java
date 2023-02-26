@@ -4,7 +4,6 @@
  */
 package fr.javacnam.domotique.dao;
 
-import fr.javacnam.domotique.beans.Equipement;
 import fr.javacnam.domotique.beans.TypeEquipement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

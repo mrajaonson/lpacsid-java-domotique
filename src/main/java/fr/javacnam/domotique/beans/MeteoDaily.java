@@ -4,6 +4,9 @@
  */
 package fr.javacnam.domotique.beans;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author rajaonson
@@ -72,6 +75,13 @@ public class MeteoDaily {
 
     public void setSunset(String sunset) {
         this.sunset = sunset;
+    }
+
+    public String getFormattedTime() {
+        LocalDate date = LocalDate.parse(this.time, DateTimeFormatter.ISO_LOCAL_DATE);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+
+        return date.format(formatter);
     }
 
 }

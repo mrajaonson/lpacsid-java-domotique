@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="fr.javacnam.domotique.beans.MeteoDaily"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -42,12 +44,42 @@
                                     <p class="title" id="currentDate"></p>
                                 </div>
                             </article>
+                            <%--Affichage des prévisions températures--%>
                             <article class="tile is-child notification is-warning">
                                 <p class="title">Température extérieure</p>
-                                <p>Aujourd'hui</p>
-                                <p>Min : ${meteoDaily.getTemperatureMin()}°C</p>
-                                <p>Max : ${meteoDaily.getTemperatureMax()}°C</p>
+                                <table class="table" style="background-color: transparent;">
+                                    <% List<MeteoDaily> prevMeteoDaily = (List<MeteoDaily>) request.getSession().getAttribute("previsionMeteoDaily"); %>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                                <% for (MeteoDaily meteoDailyTH : prevMeteoDaily) { %>
+                                            <td><%= meteoDailyTH.getFormattedTime() %></td>
+                                            <%
+                                              }
+                                            %>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Min</th>
+                                                <% for (MeteoDaily meteoDailyMin : prevMeteoDaily) {  %>
+                                            <td><%= meteoDailyMin.getTemperatureMin() %></td>
+                                            <%
+                                              }
+                                            %>
+                                        </tr>
+                                        <tr>
+                                            <th>Max</th>
+                                                <% for (MeteoDaily meteoDailyMax : prevMeteoDaily) {  %>
+                                            <td><%= meteoDailyMax.getTemperatureMax() %></td>
+                                            <%
+                                              }
+                                            %>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </article>
+                            <%--Affichage des--%>
                             <article class="tile is-child notification is-warning">
                                 <p class="title">Ephémérides</p>
                                 <p>

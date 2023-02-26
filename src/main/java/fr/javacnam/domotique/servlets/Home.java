@@ -77,9 +77,11 @@ public class Home extends HttpServlet {
 
             // Récupération données météo
             MeteoDaily meteoDaily = this.meteoDailyDao.getCurrentMeteoDailyFromTimezone(TIMEZONE);
+            List<MeteoDaily> previsionMeteoDaily = this.meteoDailyDao.getPrevisionMeteoDailyFromTimezone(TIMEZONE);
 
             // Enregistrement dans la session les données météo
             session.setAttribute("meteoDaily", meteoDaily);
+            session.setAttribute("previsionMeteoDaily", previsionMeteoDaily);
 
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
