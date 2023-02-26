@@ -82,18 +82,44 @@
                             <%--Affichage des--%>
                             <article class="tile is-child notification is-warning">
                                 <p class="title">Ephémérides</p>
-                                <p>
-                                    <span class="icon">
-                                        <i class="gg-sun"></i>
-                                    </span>
-                                    <span> ${meteoDaily.getSunrise()}</span>
-                                </p>
-                                <p>
-                                    <span class="icon">
-                                        <i class="gg-moon"></i>
-                                    </span>
-                                    <span>${meteoDaily.getSunset()}</span>
-                                </p>
+                                <table class="table" style="background-color: transparent;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                                <% for (MeteoDaily meteoDailySun : prevMeteoDaily) { %>
+                                            <td><%= meteoDailySun.getFormattedTime() %></td>
+                                            <%
+                                              }
+                                            %>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>
+                                                <span class="icon">
+                                                    <i class="gg-sun"></i>
+                                                </span>
+                                            </th>
+                                            <% for (MeteoDaily meteoDailySunrise : prevMeteoDaily) {  %>
+                                            <td><%= meteoDailySunrise.getSunrise() %></td>
+                                            <%
+                                              }
+                                            %>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span class="icon">
+                                                    <i class="gg-moon"></i>
+                                                </span>
+                                            </th>
+                                            <% for (MeteoDaily meteoDailySunset : prevMeteoDaily) {  %>
+                                            <td><%= meteoDailySunset.getSunset() %></td>
+                                            <%
+                                              }
+                                            %>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </article>
                         </div>
                         <div class="tile is-parent">
