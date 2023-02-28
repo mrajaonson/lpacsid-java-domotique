@@ -11,6 +11,7 @@ import fr.javacnam.domotique.dao.DaoFactory;
 import fr.javacnam.domotique.dao.EquipementDao;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
 import fr.javacnam.domotique.dao.MeteoHourlyDao;
+import fr.javacnam.domotique.utils.Meteo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -120,16 +122,30 @@ public class Home extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.io.FileNotFoundException
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, FileNotFoundException {
         HttpSession session = request.getSession();
 
         // Traitement déconnexion
         String action = request.getParameter("action");
         if ("deconnexion".equals(action)) {
             session.setAttribute("isAuth", null);
+        }
+
+        // Méthode de récupération et de persistance des données.
+        if ("fetchdata".equals(action)) {
+            try {
+                System.out.println("Récupération de l'api météo");
+                // Meteo
+                Meteo meteo = new Meteo(this.meteoDailyDao, this.meteoHourlyDao);
+                meteo.fetchMeteo();
+                meteo.persistMeteo();
+            } catch (ParseException ex) {
+                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         processRequest(request, response);

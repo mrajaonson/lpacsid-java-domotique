@@ -38,6 +38,14 @@
 
         <div class="navbar-end">
             <div class="navbar-item">
+                <form class="mr-3" method="post" action="Home">
+                    <input type="hidden" name="action" value="fetchdata">
+                    <button class="button is-info" type="submit">
+                        <span class="icon is-small">
+                            <i class="gg-sync"></i>
+                        </span>
+                    </button>
+                </form>
                 <form method="post" action="Home">
                     <input type="hidden" name="action" value="deconnexion">
                     <button class="button is-light" type="submit">Déconnexion</button>

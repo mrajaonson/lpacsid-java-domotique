@@ -5,7 +5,6 @@
 package fr.javacnam.domotique.dao;
 
 import fr.javacnam.domotique.beans.MeteoDaily;
-import fr.javacnam.domotique.utils.DateFormat;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
