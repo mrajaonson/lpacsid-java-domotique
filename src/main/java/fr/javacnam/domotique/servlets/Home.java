@@ -7,10 +7,12 @@ package fr.javacnam.domotique.servlets;
 import fr.javacnam.domotique.beans.Equipement;
 import fr.javacnam.domotique.beans.MeteoDaily;
 import fr.javacnam.domotique.beans.MeteoHourly;
+import fr.javacnam.domotique.beans.TypeEquipement;
 import fr.javacnam.domotique.dao.DaoFactory;
 import fr.javacnam.domotique.dao.EquipementDao;
 import fr.javacnam.domotique.dao.MeteoDailyDao;
 import fr.javacnam.domotique.dao.MeteoHourlyDao;
+import fr.javacnam.domotique.dao.TypeEquipementDao;
 import fr.javacnam.domotique.utils.Meteo;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
@@ -40,6 +42,7 @@ public class Home extends HttpServlet {
     private MeteoDailyDao meteoDailyDao;
     private MeteoHourlyDao meteoHourlyDao;
     private EquipementDao equipementDao;
+    private TypeEquipementDao typeEquipementDao;
 
     @Override
     public void init() throws ServletException {
@@ -49,6 +52,7 @@ public class Home extends HttpServlet {
             this.meteoDailyDao = daoFactory.getMeteoDailyDao();
             this.meteoHourlyDao = daoFactory.getMeteoHourlyDao();
             this.equipementDao = daoFactory.getEquipementDao();
+            this.typeEquipementDao = daoFactory.getTypeEquipementDao();
 
         } catch (SQLException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,6 +91,10 @@ public class Home extends HttpServlet {
             session.setAttribute("meteoDaily", meteoDaily);
             session.setAttribute("previsionMeteoDaily", previsionMeteoDaily);
             session.setAttribute("dailyMeteoHourly", dailyMeteoHourly);
+
+            // Liste des types-équipements à afficher
+            List<TypeEquipement> typesEquipement = this.typeEquipementDao.getAllTypeEquipement();
+            session.setAttribute("typesEquipement", typesEquipement);
 
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);

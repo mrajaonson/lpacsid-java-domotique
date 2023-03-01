@@ -95,4 +95,7 @@ public class Meteo {
             this.meteoHourlyDao.createMeteoHourly(meteoHourly);
         }
     }
+    
+    public void cleanMeteoData() {
+    }
 }

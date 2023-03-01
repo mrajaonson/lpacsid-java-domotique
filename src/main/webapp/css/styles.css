@@ -84,3 +84,19 @@ input:checked + .slider:before {
 .notification:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
+
+
+/* GRID */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 10px;
+}
+
+.grid-item {
+  background-color: #ccc;
+  padding: 20px;
+  text-align: center;
+  font-size: 30px;
+}
+
