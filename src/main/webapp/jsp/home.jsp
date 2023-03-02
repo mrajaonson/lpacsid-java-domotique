@@ -175,11 +175,16 @@
                                     <ul>
                                         <% for (Equipement equipement : equipements) {
                                         if (equipement.getType().equals(typeEquipement.getType())) { %>
-                                        <li><%= equipement.getPiece() %> - <%= equipement.getNom() %></li>
-                                            <%
-                                            }
-                                            }
-                                            %>
+                                        <li>
+                                            <%= equipement.getPiece() %> - <%= equipement.getNom() %>
+                                            <label class="checkbox">
+                                                <input type="checkbox">
+                                            </label>
+                                        </li>
+                                        <%
+                                        }
+                                        }
+                                        %>
                                     </ul>
                                 </div>
                             </div>
