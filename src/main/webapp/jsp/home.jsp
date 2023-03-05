@@ -18,6 +18,7 @@
         <style><jsp:include page="../css/bulma.min.css" /></style>
         <style><jsp:include page="../css/css.gg.css" /></style>
         <style><jsp:include page="../css/styles.css" /></style>
+        <style><jsp:include page="../css/bootstrap-icons.css" /></style>
         <title>Home</title>
     </head>
     <body>
@@ -175,6 +176,14 @@
                                     <% for (Equipement equipement : equipements) {
                                         if (equipement.getType().equals(typeEquipement.getType())) { %>
                                     <div class="columns">
+                                        <% if (equipement.getType().equals("lumiere")) { %>
+                                        <% String iconClass = equipement.getValeur() > 0 ? "bi bi-lightbulb-fill has-text-warning" : "bi bi-lightbulb-off";%>
+                                        <div class="column is-1">
+                                            <span class="icon">
+                                                <i class="<%= iconClass %>" style="font-size: 1.8rem;"></i>
+                                            </span>
+                                        </div>
+                                        <% } %>
                                         <div class="column">
                                             <%= equipement.getPiece() %> - <%= equipement.getNom() %>
                                         </div>
