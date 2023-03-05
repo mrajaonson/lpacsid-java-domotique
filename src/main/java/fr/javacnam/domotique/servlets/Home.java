@@ -100,6 +100,20 @@ public class Home extends HttpServlet {
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
             session.setAttribute("userEquipements", equipements);
 
+            for (Equipement equipement : equipements) {
+                session.setAttribute(equipement.getId(), equipement);
+
+                // Gestion des "post" checkbox
+                String checkboxEquipement = request.getParameter(equipement.getId());
+                if (checkboxEquipement != null) {
+                    int new_val = checkboxEquipement.equals("-") ? 0 : 1;
+                    equipement.setValeur(new_val);
+                    this.equipementDao.updateEquipement(equipement);
+                    System.out.println(equipement.getId());
+                    System.out.println("TEST CHECKBOX : --" + checkboxEquipement + "--");
+                }
+            }
+
             dispatcher = contexte.getRequestDispatcher("/jsp/home.jsp");
             dispatcher.forward(request, response);
         } else {

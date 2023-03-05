@@ -83,11 +83,12 @@ public class EquipementDaoImpl implements EquipementDao {
 
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
+                int id = rs.getInt("id");
                 String type = rs.getString("type");
                 Integer valeur = rs.getInt("valeur");
                 Boolean estConnecte = rs.getBoolean("estConnecte");
 
-                Equipement equipement = new Equipement(utilisateur, piece, nom, type, valeur, estConnecte);
+                Equipement equipement = new Equipement(id, utilisateur, piece, nom, type, valeur, estConnecte);
                 System.out.println("readEquipement : " + utilisateur + " " + piece + " " + nom);
                 return equipement;
             }
@@ -208,13 +209,14 @@ public class EquipementDaoImpl implements EquipementDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String piece = rs.getString("piece");
                 String nom = rs.getString("nom");
                 String type = rs.getString("type");
                 Integer valeur = rs.getInt("valeur");
                 Boolean estConnecte = rs.getBoolean("estConnecte");
                 System.out.println("SELECT FROM equipement " + utilisateur + " " + nom);
-                equipements.add(new Equipement(utilisateur, piece, nom, type, valeur, estConnecte));
+                equipements.add(new Equipement(id, utilisateur, piece, nom, type, valeur, estConnecte));
             }
             return equipements;
 
@@ -253,12 +255,13 @@ public class EquipementDaoImpl implements EquipementDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String nom = rs.getString("nom");
                 String type = rs.getString("type");
                 Integer valeur = rs.getInt("valeur");
                 Boolean estConnecte = rs.getBoolean("estConnecte");
                 System.out.println("SELECT FROM equipement " + utilisateur + " " + nom);
-                equipements.add(new Equipement(utilisateur, piece, nom, type, valeur, estConnecte));
+                equipements.add(new Equipement(id, utilisateur, piece, nom, type, valeur, estConnecte));
             }
             return equipements;
 

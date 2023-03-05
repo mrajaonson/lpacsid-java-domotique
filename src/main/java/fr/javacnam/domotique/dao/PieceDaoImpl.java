@@ -127,9 +127,10 @@ public class PieceDaoImpl implements PieceDao {
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String nom = rs.getString("nom");
                 System.out.println("SELECT FROM piece " + utilisateur + " " + nom);
-                pieces.add(new Piece(utilisateur, nom));
+                pieces.add(new Piece(id, utilisateur, nom));
             }
             return pieces;
 

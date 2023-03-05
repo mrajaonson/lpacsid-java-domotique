@@ -10,6 +10,7 @@ package fr.javacnam.domotique.beans;
  */
 public class Equipement {
 
+    private String id;
     private String utilisateur;
     private String piece;
     private String nom;
@@ -17,13 +18,22 @@ public class Equipement {
     private Integer valeur;
     private Boolean estConnecte;
 
-    public Equipement(String utilisateur, String piece, String nom, String type, Integer valeur, Boolean estConnecte) {
+    public Equipement(int id, String utilisateur, String piece, String nom, String type, Integer valeur, Boolean estConnecte) {
+        this.id = "E" + id;
         this.utilisateur = utilisateur;
         this.piece = piece;
         this.nom = nom;
         this.type = type;
         this.valeur = valeur;
         this.estConnecte = estConnecte;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = "E" + id;
     }
 
     public String getUtilisateur() {

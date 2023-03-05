@@ -164,7 +164,7 @@ public class Configuration extends HttpServlet {
 
                 // Vérification formulaire
                 if (pieceEquipement != null && nomEquipement != null) {
-                    Equipement equipement = new Equipement(user, pieceEquipement, nomEquipement, typeEquipement, 0, true);
+                    Equipement equipement = new Equipement(0, user, pieceEquipement, nomEquipement, typeEquipement, 0, true);
                     // Création
                     System.out.println("CREATION : " + user + " " + pieceEquipement + " " + nomEquipement);
                     this.equipementDao.createEquipement(equipement);

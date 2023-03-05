@@ -10,12 +10,22 @@ package fr.javacnam.domotique.beans;
  */
 public class Piece {
 
+    private int id;
     private String utilisateur;
     private String nom;
 
-    public Piece(String utilisateur, String nom) {
+    public Piece(int id, String utilisateur, String nom) {
+        this.id = id;
         this.utilisateur = utilisateur;
         this.nom = nom;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUtilisateur() {
