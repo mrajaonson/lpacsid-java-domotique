@@ -1,10 +1,9 @@
 <%-- 
     Document   : footer
-    Created on : 21 fÃ©vr. 2023, 22:15:42
+    Created on : 21 févr. 2023, 22:15:42
     Author     : rajaonson
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <footer class="footer">
     <div class="content has-text-centered">
         <p>

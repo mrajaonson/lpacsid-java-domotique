@@ -1,10 +1,9 @@
 <%--
     Document   : home
-    Created on : 21 fÃ©vr. 2023, 14:38:52
+    Created on : 21 févr. 2023, 14:38:52
     Author     : rajaonson
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="fr.javacnam.domotique.beans.MeteoDaily"%>
 <%@ page import="fr.javacnam.domotique.beans.MeteoHourly"%>
@@ -16,7 +15,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style><jsp:include page="../css/bulma.min.css" /></style>
-        <style><jsp:include page="../css/css.gg.css" /></style>
         <style><jsp:include page="../css/styles.css" /></style>
         <style><jsp:include page="../css/bootstrap-icons.css" /></style>
         <title>Home</title>
@@ -48,12 +46,12 @@
                     </article>
                 </div>
 
-                <%--Affichage des prÃ©visions tempÃ©ratures--%>
+                <%--Affichage des prévisions températures--%>
                 <div class="mb-5">
                     <article class="tile is-child notification is-warning">
-                        <p class="title">TempÃ©rature extÃ©rieure</p>
+                        <p class="title">Température extérieure</p>
                         <table class="table" style="background-color: transparent;">
-                            <%-- RÃ©cupÃ©ration des donnÃ©es mÃ©tÃ©o --%>
+                            <%-- Récupération des données météo --%>
                             <% List<MeteoDaily> prevMeteoDaily = (List<MeteoDaily>) request.getSession().getAttribute("previsionMeteoDaily"); %>
                             <thead>
                                 <tr>
@@ -87,7 +85,7 @@
 
                         <p>Par heure</p>
 
-                        <%--Affichage mÃ©tÃ©o du jour--%>
+                        <%--Affichage météo du jour--%>
                         <div class="table-container" style="width: 25em;">
                             <table class="table" style="background-color: transparent;">
                                 <% List<MeteoHourly> dailyMeteoHourly = (List<MeteoHourly>) request.getSession().getAttribute("dailyMeteoHourly"); %>
@@ -117,9 +115,9 @@
                 </div>
 
                 <div class="mb-5">
-                    <%--Affichage des Ã©phÃ©mÃ©rides--%>
+                    <%--Affichage des éphémérides--%>
                     <article class="tile is-child notification is-warning">
-                        <p class="title">EphÃ©mÃ©rides</p>
+                        <p class="title">Ephémérides</p>
                         <table class="table" style="background-color: transparent;">
                             <thead>
                                 <tr>
@@ -162,7 +160,7 @@
                 </div>
             </div>
             <div class="column">
-                <%-- RÃ©cupÃ©ration des types Ã©quipements --%>
+                <%-- Récupération des types équipements --%>
                 <% List<TypeEquipement> typesEquipement = (List<TypeEquipement>) request.getSession().getAttribute("typesEquipement"); %>
                 <% List<Equipement> equipements = (List<Equipement>) request.getSession().getAttribute("userEquipements"); %>
                 <div class="grid-container">
@@ -176,6 +174,7 @@
                                     <% for (Equipement equipement : equipements) {
                                         if (equipement.getType().equals(typeEquipement.getType())) { %>
                                     <div class="columns">
+                                        <%-- cas d'un équipement "lumière" --%>
                                         <% if (equipement.getType().equals("lumiere")) { %>
                                         <% String iconClass = equipement.getValeur() > 0 ? "bi bi-lightbulb-fill has-text-warning" : "bi bi-lightbulb-off";%>
                                         <div class="column is-1">
@@ -184,10 +183,14 @@
                                             </span>
                                         </div>
                                         <% } %>
+                                        <%-- cas d'un équipement "volet" ou "porte-garage" --%>
+
                                         <div class="column">
                                             <%= equipement.getPiece() %> - <%= equipement.getNom() %>
                                         </div>
                                         <div class="column">
+                                            <%-- cas d'un équipement "lumière" --%>
+                                            <% if (equipement.getType().equals("lumiere")) { %>
                                             <div class="buttons has-addons">
                                                 <% String buttonClass1 = equipement.getValeur() > 0 ? "" : "is-info is-selected";
                                             String buttonClass2 = equipement.getValeur() > 0 ? "is-info is-selected" : "";%>
@@ -200,6 +203,28 @@
                                                     <button class="button is-small <%= buttonClass2 %>" type="submit" name="<%= equipement.getId() %>"></button>
                                                 </form>
                                             </div>
+                                            <% } %>
+                                            <%-- cas d'un équipement "volet" ou "porte-garage" --%>
+                                            <%if (equipement.getType().equals("volet") || equipement.getType().equals("porte-garage")) { %>
+                                            <div class="buttons">
+                                                <form action="Home" method="post">
+                                                    <input type="hidden" name="<%= equipement.getId() %>" value="-" />
+                                                    <button class="button is-success" type="submit" name="<%= equipement.getId() %>">
+                                                        <span class="icon">
+                                                            <i class="bi bi-caret-down-fill" style="font-size: 2rem"></i>
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                                <form action="Home" method="post">
+                                                    <input type="hidden" name="<%= equipement.getId() %>" value="+" />
+                                                    <button class="button is-success" type="submit" name="<%= equipement.getId() %>">
+                                                        <span class="icon">
+                                                            <i class="bi bi-caret-up-fill" style="font-size: 2rem"></i>
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <% } %>
                                         </div>
                                     </div>
                                     <%
@@ -216,7 +241,6 @@
                 </div>
             </div>
         </div>
-
         <%-- FOOTER --%>
         <jsp:include page="footer.jsp" />
     </body>

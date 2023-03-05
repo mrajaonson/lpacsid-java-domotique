@@ -1,15 +1,15 @@
 <%-- 
     Document   : header
-    Created on : 21 fÃ©vr. 2023, 22:15:49
+    Created on : 21 févr. 2023, 22:15:49
     Author     : rajaonson
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<style><jsp:include page="../css/bootstrap-icons.css" /></style>
 <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="Home">
             <span class="icon">
-                <i class="gg-home" aria-hidden="true"></i>
+                <i class="bi bi-house-door" style="font-size: 2rem"></i>
             </span>
         </a>
 
@@ -42,13 +42,13 @@
                     <input type="hidden" name="action" value="fetchdata">
                     <button class="button is-info" type="submit">
                         <span class="icon is-small">
-                            <i class="gg-sync"></i>
+                            <i class="bi bi-arrow-repeat" style="font-size: 2rem"></i>
                         </span>
                     </button>
                 </form>
                 <form method="post" action="Home">
                     <input type="hidden" name="action" value="deconnexion">
-                    <button class="button is-light" type="submit">DÃ©connexion</button>
+                    <button class="button is-light" type="submit">Déconnexion</button>
                 </form>
             </div>
         </div>
