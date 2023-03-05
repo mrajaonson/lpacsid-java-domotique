@@ -109,65 +109,66 @@
 
         <script><jsp:include page="../js/modal.js" /></script>
 
-
-        <%--Liste des pièces--%>
-        <div class="m-4" style="width: 25%">
-            <h2 class="title is-2">Liste des pièces</h2>
-            <%
-              List<Piece> pieces = (List<Piece>) request.getSession().getAttribute("userPieces");
-              for (Piece piece : pieces) {
-            %>
-            <div class="card m-2">
-                <div class="card-content">
-                    <div class="columns is-vcentered">
-                        <div class="column">
-                            <%= piece.getNom() %>
+        <%-- Liste des pièces et équipements --%>
+        <div class="columns">
+            <%--Liste des pièces--%>
+            <div class="column m-4 is-4">
+                <h2 class="title is-2">Liste des pièces</h2>
+                <%
+                  List<Piece> pieces = (List<Piece>) request.getSession().getAttribute("userPieces");
+                  for (Piece piece : pieces) {
+                %>
+                <div class="card m-2">
+                    <div class="card-content">
+                        <div class="columns is-vcentered">
+                            <div class="column">
+                                <%= piece.getNom() %>
+                            </div>
+                            <form class="mr-3" method="post" action="Configuration">
+                                <input type="hidden" name="deletePiece" value="<%= piece.getId() %>">
+                                <button class="button is-danger" type="submit" name="deletePiece">
+                                    <span class="icon is-small">
+                                        <i class="gg-trash"></i>
+                                    </span>
+                                </button>
+                            </form>
                         </div>
-                        <form class="mr-3" method="post" action="Configuration">
-                            <input type="hidden" name="deletePiece" value="<%= piece.getId() %>">
-                            <button class="button is-danger" type="submit" name="deletePiece">
-                                <span class="icon is-small">
-                                    <i class="gg-trash"></i>
-                                </span>
-                            </button>
-                        </form>
                     </div>
                 </div>
+                <%
+                  }
+                %>
             </div>
-            <%
-              }
-            %>
-        </div>
 
-        <%--Liste des équipements--%>
-        <div class="m-4" style="width: 25%">
-            <h2 class="title is-2">Liste des équipements</h2>
-            <%
-              List<Equipement> equipements = (List<Equipement>) request.getSession().getAttribute("userEquipements");
-              for (Equipement equipement : equipements) {
-            %>
-            <div class="card m-2">
-                <div class="card-content">
-                    <div class="columns is-vcentered">
-                        <div class="column">
-                            <%= equipement.getPiece() %> - <%= equipement.getNom() %>
+            <%--Liste des équipements--%>
+            <div class="column m-4 is-4">
+                <h2 class="title is-2">Liste des équipements</h2>
+                <%
+                  List<Equipement> equipements = (List<Equipement>) request.getSession().getAttribute("userEquipements");
+                  for (Equipement equipement : equipements) {
+                %>
+                <div class="card m-2">
+                    <div class="card-content">
+                        <div class="columns is-vcentered">
+                            <div class="column">
+                                <%= equipement.getPiece() %> - <%= equipement.getNom() %>
+                            </div>
+                            <form class="mr-3" method="post" action="Configuration">
+                                <input type="hidden" name="deleteEquipement" value="<%= equipement.getId() %>">
+                                <button class="button is-danger" type="submit" name="deleteEquipement">
+                                    <span class="icon is-small">
+                                        <i class="gg-trash"></i>
+                                    </span>
+                                </button>
+                            </form>
                         </div>
-                        <form class="mr-3" method="post" action="Configuration">
-                            <input type="hidden" name="deleteEquipement" value="<%= equipement.getId() %>">
-                            <button class="button is-danger" type="submit" name="deleteEquipement">
-                                <span class="icon is-small">
-                                    <i class="gg-trash"></i>
-                                </span>
-                            </button>
-                        </form>
                     </div>
                 </div>
+                <%
+                  }
+                %>
             </div>
-            <%
-              }
-            %>
         </div>
-
 
         <%-- FOOTER --%>
         <jsp:include page="footer.jsp" />

@@ -21,7 +21,7 @@ public interface PieceDao {
 
     public void deletePiece(String utilisateur, String nom);
 
-    public void deletePieceById(String id);
+    public void deletePieceById(String localId);
 
     public List<Piece> getAllPieces(String utilisateur);
 
