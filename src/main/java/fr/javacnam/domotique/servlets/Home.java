@@ -109,8 +109,6 @@ public class Home extends HttpServlet {
                     int new_val = checkboxEquipement.equals("-") ? 0 : 1;
                     equipement.setValeur(new_val);
                     this.equipementDao.updateEquipement(equipement);
-                    System.out.println(equipement.getId());
-                    System.out.println("TEST CHECKBOX : --" + checkboxEquipement + "--");
                 }
             }
 

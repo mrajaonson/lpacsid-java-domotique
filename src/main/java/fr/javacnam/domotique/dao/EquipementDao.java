@@ -21,6 +21,8 @@ public interface EquipementDao {
 
     public void deleteEquipement(String utilisateur, String piece, String nom);
 
+    public void deleteEquipementById(String localId);
+
     public List<Equipement> getAllEquipements(String utilisateur);
 
     public List<Equipement> getAllEquipementsPiece(String utilisateur, String piece);

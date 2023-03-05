@@ -20,7 +20,9 @@ public interface PieceDao {
     public void updatePiece(Piece piece);
 
     public void deletePiece(String utilisateur, String nom);
-    
+
+    public void deletePieceById(String id);
+
     public List<Piece> getAllPieces(String utilisateur);
 
 }

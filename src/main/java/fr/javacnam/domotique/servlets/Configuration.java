@@ -29,11 +29,11 @@ import java.util.logging.Logger;
  * @author rajaonson
  */
 public class Configuration extends HttpServlet {
-
+    
     private PieceDao pieceDao;
     private EquipementDao equipementDao;
     private TypeEquipementDao typeEquipementDao;
-
+    
     @Override
     public void init() throws ServletException {
         DaoFactory daoFactory;
@@ -58,14 +58,14 @@ public class Configuration extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         HttpSession session = request.getSession();
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
-
+        
         Auth auth = new Auth();
         boolean isAuth = auth.isAuth(session);
-
+        
         if (isAuth) {
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
@@ -85,7 +85,7 @@ public class Configuration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
 
@@ -93,7 +93,7 @@ public class Configuration extends HttpServlet {
         HttpSession session = request.getSession();
         Auth auth = new Auth();
         boolean isAuth = auth.isAuth(session);
-
+        
         if (isAuth) {
             // Récupération du user connecté
             String user = (String) session.getAttribute("user");
@@ -109,7 +109,7 @@ public class Configuration extends HttpServlet {
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
             session.setAttribute("userEquipements", equipements);
-
+            
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -128,7 +128,7 @@ public class Configuration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
 
@@ -136,7 +136,7 @@ public class Configuration extends HttpServlet {
         HttpSession session = request.getSession();
         Auth auth = new Auth();
         boolean isAuth = auth.isAuth(session);
-
+        
         if (isAuth) {
             String user = (String) session.getAttribute("user");
 
@@ -171,6 +171,18 @@ public class Configuration extends HttpServlet {
                 }
             }
 
+            // Si post deletePiece
+            String deletePiece = request.getParameter("deletePiece");
+            if (deletePiece != null) {
+                this.pieceDao.deletePieceById(deletePiece);
+            }
+
+            // Si post deleteEquipement
+            String deleteEquipement = request.getParameter("deleteEquipement");
+            if (deleteEquipement != null) {
+                this.equipementDao.deleteEquipementById(deleteEquipement);
+            }
+
             // Récupération de la liste des pièces
             List<Piece> pieces = this.pieceDao.getAllPieces(user);
             session.setAttribute("userPieces", pieces);
@@ -178,7 +190,7 @@ public class Configuration extends HttpServlet {
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
             session.setAttribute("userEquipements", equipements);
-
+            
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -195,5 +207,5 @@ public class Configuration extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
-
+    
 }

@@ -111,6 +111,43 @@ public class PieceDaoImpl implements PieceDao {
     }
 
     @Override
+    public void deletePieceById(String localId) {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            String query = "DELETE FROM piece WHERE id = ?;";
+            preparedStatement = connexion.prepareStatement(query);
+            
+            String id = localId.substring(1);
+
+            preparedStatement.setString(1, id);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("DELETE FROM piece " + id);
+            } else {
+                System.out.println("Aucun élément supprimé piece " + id);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PieceDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(PieceDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+    }
+
+    @Override
     public List<Piece> getAllPieces(String utilisateur) {
 
         Connection connexion = null;

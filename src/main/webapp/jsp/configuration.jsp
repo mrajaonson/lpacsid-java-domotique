@@ -119,8 +119,18 @@
             %>
             <div class="card m-2">
                 <div class="card-content">
-                    <div class="content">
-                        <%= piece.getNom() %>
+                    <div class="columns is-vcentered">
+                        <div class="column">
+                            <%= piece.getNom() %>
+                        </div>
+                        <form class="mr-3" method="post" action="Configuration">
+                            <input type="hidden" name="deletePiece" value="<%= piece.getId() %>">
+                            <button class="button is-danger" type="submit" name="deletePiece">
+                                <span class="icon is-small">
+                                    <i class="gg-trash"></i>
+                                </span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -138,9 +148,18 @@
             %>
             <div class="card m-2">
                 <div class="card-content">
-                    <div class="content">
-                        <%= equipement.getPiece() %>
-                        <%= equipement.getNom() %>
+                    <div class="columns is-vcentered">
+                        <div class="column">
+                            <%= equipement.getPiece() %> - <%= equipement.getNom() %>
+                        </div>
+                        <form class="mr-3" method="post" action="Configuration">
+                            <input type="hidden" name="deleteEquipement" value="<%= equipement.getId() %>">
+                            <button class="button is-danger" type="submit" name="deleteEquipement">
+                                <span class="icon is-small">
+                                    <i class="gg-trash"></i>
+                                </span>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

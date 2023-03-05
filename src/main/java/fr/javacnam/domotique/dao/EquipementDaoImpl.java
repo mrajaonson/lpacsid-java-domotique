@@ -189,7 +189,44 @@ public class EquipementDaoImpl implements EquipementDao {
                 Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
             }
         }
+    }
 
+    @Override
+    public void deleteEquipementById(String localId) {
+
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            String query = "DELETE FROM equipement WHERE id = ?;";
+            preparedStatement = connexion.prepareStatement(query);
+            
+            String id = localId.substring(1);
+
+            preparedStatement.setString(1, id);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("DELETE FROM equipement " + id);
+            } else {
+                System.out.println("Aucun élément supprimé equipement " + id);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
     }
 
     @Override
