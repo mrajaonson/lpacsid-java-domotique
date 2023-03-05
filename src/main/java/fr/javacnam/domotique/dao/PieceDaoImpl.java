@@ -33,7 +33,7 @@ public class PieceDaoImpl implements PieceDao {
 
         try {
             connexion = daoFactory.getConnection();
-            String query = "INSERT INTO piece VALUES(?, ?);";
+            String query = "INSERT INTO piece (utilisateur, nom) VALUES(?, ?);";
             preparedStatement = connexion.prepareStatement(query);
 
             preparedStatement.setString(1, utilisateur);

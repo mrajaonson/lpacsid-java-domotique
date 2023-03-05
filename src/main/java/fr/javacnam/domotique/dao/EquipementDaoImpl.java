@@ -33,7 +33,7 @@ public class EquipementDaoImpl implements EquipementDao {
 
         try {
             connexion = daoFactory.getConnection();
-            String query = "INSERT INTO equipement VALUES(?, ?, ?, ?, ?, ?);";
+            String query = "INSERT INTO equipement (utilisateur, piece, nom, type, valeur, estConnecte) VALUES(?, ?, ?, ?, ?, ?);";
             preparedStatement = connexion.prepareStatement(query);
 
             preparedStatement.setString(1, equipement.getUtilisateur());

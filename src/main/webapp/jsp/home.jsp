@@ -171,24 +171,26 @@
                             <div class="content">
                                 <p class="title"><%= typeEquipement.getType().toUpperCase() %></p>
                                 <p class="subtitle"></p>
-                                <div class="content columns">
+                                <div class="content">
                                     <% for (Equipement equipement : equipements) {
                                         if (equipement.getType().equals(typeEquipement.getType())) { %>
-                                    <div class="column">
-                                        <%= equipement.getPiece() %> - <%= equipement.getNom() %>
-                                    </div>
-                                    <div class="column">
-                                        <div class="buttons has-addons">
-                                            <% String buttonClass1 = equipement.getValeur() > 0 ? "" : "is-info is-selected";
+                                    <div class="columns">
+                                        <div class="column">
+                                            <%= equipement.getPiece() %> - <%= equipement.getNom() %>
+                                        </div>
+                                        <div class="column">
+                                            <div class="buttons has-addons">
+                                                <% String buttonClass1 = equipement.getValeur() > 0 ? "" : "is-info is-selected";
                                             String buttonClass2 = equipement.getValeur() > 0 ? "is-info is-selected" : "";%>
-                                            <form action="Home" method="post">
-                                                <input type="hidden" name="<%= equipement.getId() %>" value="-" />
-                                                <button class="button is-small <%= buttonClass1 %>" type="submit" name="<%= equipement.getId() %>"></button>
-                                            </form>
-                                            <form action="Home" method="post">
-                                                <input type="hidden" name="<%= equipement.getId() %>" value="+" />
-                                                <button class="button is-small <%= buttonClass2 %>" type="submit" name="<%= equipement.getId() %>"></button>
-                                            </form>
+                                                <form action="Home" method="post">
+                                                    <input type="hidden" name="<%= equipement.getId() %>" value="-" />
+                                                    <button class="button is-small <%= buttonClass1 %>" type="submit" name="<%= equipement.getId() %>"></button>
+                                                </form>
+                                                <form action="Home" method="post">
+                                                    <input type="hidden" name="<%= equipement.getId() %>" value="+" />
+                                                    <button class="button is-small <%= buttonClass2 %>" type="submit" name="<%= equipement.getId() %>"></button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                     <%
