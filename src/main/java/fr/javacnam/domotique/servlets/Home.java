@@ -96,6 +96,36 @@ public class Home extends HttpServlet {
             List<TypeEquipement> typesEquipement = this.typeEquipementDao.getAllTypeEquipement();
             session.setAttribute("typesEquipement", typesEquipement);
 
+            // Gestion des "post" équipements
+            // Baisser valeur
+            String decreaseEquipment = request.getParameter("decreaseEquipment");
+            if (decreaseEquipment != null) {
+                Equipement equipement = this.equipementDao.readEquipementById(decreaseEquipment);
+                String type = equipement.getType();
+                int valeur = equipement.getValeur();
+                // Cas radiateur
+                if (type.equals("radiateur")) {
+                    equipement.setValeur(valeur - 1);
+                } else {
+                    equipement.setValeur(0);
+                }
+                this.equipementDao.updateEquipement(equipement);
+            }
+
+            // Augmenter valeur
+            String increaseEquipment = request.getParameter("increaseEquipment");
+            if (increaseEquipment != null) {
+                Equipement equipement = this.equipementDao.readEquipementById(increaseEquipment);
+                String type = equipement.getType();
+                int valeur = equipement.getValeur();
+                if (type.equals("radiateur")) {
+                    equipement.setValeur(valeur + 1);
+                } else {
+                    equipement.setValeur(1);
+                }
+                this.equipementDao.updateEquipement(equipement);
+            }
+
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
             session.setAttribute("userEquipements", equipements);

@@ -125,7 +125,7 @@
                             </div>
                             <form class="mr-3" method="post" action="Configuration">
                                 <input type="hidden" name="deletePiece" value="<%= piece.getId() %>">
-                                <button class="button is-danger" type="submit" name="deletePiece">
+                                <button class="button is-danger is-inverted" type="submit" name="deletePiece">
                                     <span class="icon is-small">
                                         <i class="gg-trash"></i>
                                     </span>
@@ -154,7 +154,7 @@
                             </div>
                             <form class="mr-3" method="post" action="Configuration">
                                 <input type="hidden" name="deleteEquipement" value="<%= equipement.getId() %>">
-                                <button class="button is-danger" type="submit" name="deleteEquipement">
+                                <button class="button is-danger is-inverted" type="submit" name="deleteEquipement">
                                     <span class="icon is-small">
                                         <i class="gg-trash"></i>
                                     </span>

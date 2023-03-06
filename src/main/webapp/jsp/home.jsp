@@ -55,8 +55,12 @@
                             <% List<MeteoDaily> prevMeteoDaily = (List<MeteoDaily>) request.getSession().getAttribute("previsionMeteoDaily"); %>
                             <thead>
                                 <tr>
-                                    <th></th>
-                                        <% for (MeteoDaily meteoDailyTH : prevMeteoDaily) { %>
+                                    <th>
+                                        <span class="icon">
+                                            <i class="bi bi-thermometer-sun" style="font-size: 2rem"></i>
+                                        </span>
+                                    </th>
+                                    <% for (MeteoDaily meteoDailyTH : prevMeteoDaily) { %>
                                     <td><%= meteoDailyTH.getFormattedTime() %></td>
                                     <%
                                       }
@@ -67,7 +71,7 @@
                                 <tr>
                                     <th>Min</th>
                                         <% for (MeteoDaily meteoDailyMin : prevMeteoDaily) {  %>
-                                    <td><%= meteoDailyMin.getTemperatureMin() %></td>
+                                    <td><%= meteoDailyMin.getTemperatureMin() %>°C</td>
                                     <%
                                       }
                                     %>
@@ -75,7 +79,7 @@
                                 <tr>
                                     <th>Max</th>
                                         <% for (MeteoDaily meteoDailyMax : prevMeteoDaily) {  %>
-                                    <td><%= meteoDailyMax.getTemperatureMax() %></td>
+                                    <td><%= meteoDailyMax.getTemperatureMax() %>°C</td>
                                     <%
                                       }
                                     %>
@@ -103,7 +107,7 @@
                                     <tr>
                                         <th></th>
                                             <% for (MeteoHourly meteoHourlyTD : dailyMeteoHourly) {  %>
-                                        <td><%= meteoHourlyTD.getTemperature() %></td>
+                                        <td><%= meteoHourlyTD.getTemperature() %>°C</td>
                                         <%
                                           }
                                         %>
@@ -133,7 +137,7 @@
                                 <tr>
                                     <th>
                                         <span class="icon">
-                                            <i class="gg-sun"></i>
+                                            <i class="bi bi-sunrise" style="font-size: 2rem"></i>
                                         </span>
                                     </th>
                                     <% for (MeteoDaily meteoDailySunrise : prevMeteoDaily) {  %>
@@ -145,7 +149,7 @@
                                 <tr>
                                     <th>
                                         <span class="icon">
-                                            <i class="gg-moon"></i>
+                                            <i class="bi bi-sunset" style="font-size: 2rem"></i>
                                         </span>
                                     </th>
                                     <% for (MeteoDaily meteoDailySunset : prevMeteoDaily) {  %>
@@ -160,7 +164,7 @@
                 </div>
             </div>
             <div class="column">
-                <%-- Récupération des types équipements --%>
+                <%-- Récupération des types équipements --%>               
                 <% List<TypeEquipement> typesEquipement = (List<TypeEquipement>) request.getSession().getAttribute("typesEquipement"); %>
                 <% List<Equipement> equipements = (List<Equipement>) request.getSession().getAttribute("userEquipements"); %>
                 <div class="grid-container">
@@ -173,7 +177,7 @@
                                 <div class="content">
                                     <% for (Equipement equipement : equipements) {
                                         if (equipement.getType().equals(typeEquipement.getType())) { %>
-                                    <div class="columns">
+                                    <div class="columns is-vcentered">
                                         <%-- cas d'un équipement "lumière" --%>
                                         <% if (equipement.getType().equals("lumiere")) { %>
                                         <% String iconClass = equipement.getValeur() > 0 ? "bi bi-lightbulb-fill has-text-warning" : "bi bi-lightbulb-off";%>
@@ -184,7 +188,22 @@
                                         </div>
                                         <% } %>
                                         <%-- cas d'un équipement "volet" ou "porte-garage" --%>
-
+                                        <% if (equipement.getType().equals("volet") || equipement.getType().equals("porte-garage")) { %>
+                                        <%  String voletIconClass = equipement.getValeur() > 0 ? "bi bi-arrow-up-square-fill" : "bi bi-arrow-down-square-fill"; %>
+                                        <div class="column is-1">
+                                            <span class="icon">
+                                                <i class="<%= voletIconClass %>" style="font-size: 1.8rem;"></i>
+                                            </span>
+                                        </div>
+                                        <% } %>
+                                        <%-- cas d'un équipement "radiateur" --%>
+                                        <% if (equipement.getType().equals("radiateur")) { %>
+                                        <div class="column is-2">
+                                            <button class="button is-info is-light">
+                                                <span><%= equipement.getValeur() %>°C</span>
+                                            </button>
+                                        </div>
+                                        <% } %>
                                         <div class="column">
                                             <%= equipement.getPiece() %> - <%= equipement.getNom() %>
                                         </div>
@@ -195,29 +214,29 @@
                                                 <% String buttonClass1 = equipement.getValeur() > 0 ? "" : "is-info is-selected";
                                             String buttonClass2 = equipement.getValeur() > 0 ? "is-info is-selected" : "";%>
                                                 <form action="Home" method="post">
-                                                    <input type="hidden" name="<%= equipement.getId() %>" value="-" />
-                                                    <button class="button is-small <%= buttonClass1 %>" type="submit" name="<%= equipement.getId() %>"></button>
+                                                    <input type="hidden" name="decreaseEquipment" value="<%= equipement.getId() %>" />
+                                                    <button class="button is-small <%= buttonClass1 %>" type="submit" name="decreaseEquipment"></button>
                                                 </form>
                                                 <form action="Home" method="post">
-                                                    <input type="hidden" name="<%= equipement.getId() %>" value="+" />
-                                                    <button class="button is-small <%= buttonClass2 %>" type="submit" name="<%= equipement.getId() %>"></button>
+                                                    <input type="hidden" name="increaseEquipment" value="<%= equipement.getId() %>" />
+                                                    <button class="button is-small <%= buttonClass2 %>" type="submit" name="increaseEquipment"></button>
                                                 </form>
                                             </div>
                                             <% } %>
                                             <%-- cas d'un équipement "volet" ou "porte-garage" --%>
-                                            <%if (equipement.getType().equals("volet") || equipement.getType().equals("porte-garage")) { %>
+                                            <%if (equipement.getType().equals("volet") || equipement.getType().equals("porte-garage") || equipement.getType().equals("radiateur")) { %>
                                             <div class="buttons">
                                                 <form action="Home" method="post">
-                                                    <input type="hidden" name="<%= equipement.getId() %>" value="-" />
-                                                    <button class="button is-success" type="submit" name="<%= equipement.getId() %>">
+                                                    <input type="hidden" name="decreaseEquipment" value="<%= equipement.getId() %>" />
+                                                    <button class="button is-success" type="submit" name="decreaseEquipment">
                                                         <span class="icon">
                                                             <i class="bi bi-caret-down-fill" style="font-size: 2rem"></i>
                                                         </span>
                                                     </button>
                                                 </form>
                                                 <form action="Home" method="post">
-                                                    <input type="hidden" name="<%= equipement.getId() %>" value="+" />
-                                                    <button class="button is-success" type="submit" name="<%= equipement.getId() %>">
+                                                    <input type="hidden" name="increaseEquipment" value="<%= equipement.getId() %>" />
+                                                    <button class="button is-success" type="submit" name="increaseEquipment">
                                                         <span class="icon">
                                                             <i class="bi bi-caret-up-fill" style="font-size: 2rem"></i>
                                                         </span>

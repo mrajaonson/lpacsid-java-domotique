@@ -111,6 +111,51 @@ public class EquipementDaoImpl implements EquipementDao {
     }
 
     @Override
+    public Equipement readEquipementById(String localId) {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            preparedStatement = connexion.prepareStatement("SELECT * FROM equipement WHERE id = ?;");
+
+            String stringId = localId.substring(1);
+
+            preparedStatement.setString(1, stringId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String utilisateur = rs.getString("utilisateur");
+                String piece = rs.getString("piece");
+                String nom = rs.getString("nom");
+                String type = rs.getString("type");
+                Integer valeur = rs.getInt("valeur");
+                Boolean estConnecte = rs.getBoolean("estConnecte");
+
+                Equipement equipement = new Equipement(id, utilisateur, piece, nom, type, valeur, estConnecte);
+                System.out.println("readEquipement : " + utilisateur + " " + piece + " " + nom);
+                return equipement;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void updateEquipement(Equipement equipement) {
 
         Connection connexion = null;
@@ -201,7 +246,7 @@ public class EquipementDaoImpl implements EquipementDao {
             connexion = daoFactory.getConnection();
             String query = "DELETE FROM equipement WHERE id = ?;";
             preparedStatement = connexion.prepareStatement(query);
-            
+
             String id = localId.substring(1);
 
             preparedStatement.setString(1, id);

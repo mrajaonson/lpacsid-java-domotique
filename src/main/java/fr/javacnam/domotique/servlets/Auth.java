@@ -10,6 +10,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,6 +53,17 @@ public class Auth extends HttpServlet {
         HttpSession session = request.getSession();
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("user")) {
+                    session.setAttribute("isAuth", true);
+                    session.setAttribute("user", cookie.getValue());
+                }
+            }
+        }
+
         boolean isAuth = this.isAuth(session);
 
         if (isAuth) {
@@ -89,6 +101,12 @@ public class Auth extends HttpServlet {
         if (isAuth) {
             session.setAttribute("isAuth", isAuth);
             session.setAttribute("user", username);
+
+            Cookie cookie = new Cookie("user", username);
+            // Validité du cookie en secondes : 60s * 60m * 24h * 3j
+            cookie.setMaxAge(60 * 60 * 24 * 3);
+            response.addCookie(cookie);
+
             response.sendRedirect("Home");
         } else {
             request.setAttribute("loginError", "Login et/ou mot de passe incorrect");

@@ -17,6 +17,8 @@ public interface EquipementDao {
 
     public Equipement readEquipement(String utilisateur, String piece, String nom);
 
+    public Equipement readEquipementById(String localId);
+
     public void updateEquipement(Equipement equipement);
 
     public void deleteEquipement(String utilisateur, String piece, String nom);
