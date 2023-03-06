@@ -18,6 +18,7 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -182,6 +183,9 @@ public class Home extends HttpServlet {
         // Traitement déconnexion
         String action = request.getParameter("action");
         if ("deconnexion".equals(action)) {
+            Cookie cookie = new Cookie("user", "");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
             session.setAttribute("isAuth", null);
         }
 
@@ -199,16 +203,6 @@ public class Home extends HttpServlet {
         }
 
         processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
 
 }

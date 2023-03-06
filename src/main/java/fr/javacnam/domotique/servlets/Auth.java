@@ -116,16 +116,6 @@ public class Auth extends HttpServlet {
     }
 
     /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-
-    /**
      * Vérifie si l'utilisateur a une session en cours
      *
      * @param session

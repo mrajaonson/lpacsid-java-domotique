@@ -48,33 +48,6 @@ public class Configuration extends HttpServlet {
     }
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        ServletContext contexte = getServletContext();
-        RequestDispatcher dispatcher;
-        
-        Auth auth = new Auth();
-        boolean isAuth = auth.isAuth(session);
-        
-        if (isAuth) {
-            dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
-            dispatcher.forward(request, response);
-        } else {
-            response.sendRedirect("Auth");
-        }
-    }
-
-    /**
      * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
@@ -196,16 +169,6 @@ public class Configuration extends HttpServlet {
         } else {
             response.sendRedirect("Auth");
         }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
     
 }
