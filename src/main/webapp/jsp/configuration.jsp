@@ -14,7 +14,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style><jsp:include page="../css/bulma.min.css" /></style>
-        <style><jsp:include page="../css/css.gg.css" /></style>
         <style><jsp:include page="../css/styles.css" /></style>
         <title>Configuration</title>
     </head>
@@ -46,6 +45,9 @@
         </div>
 
         <%--Ajout équipement modal--%>
+        <% List<Piece> piecesOption = (List<Piece>) request.getSession().getAttribute("userPieces");
+        if (piecesOption != null) {
+        %>
         <div id="ajout-equipement-modal" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content">
@@ -58,10 +60,7 @@
                                 <label class="label">Choisir une pièce</label>
                                 <div class="select">
                                     <select name="pieceEquipement" id="piece" required>
-                                        <%
-                                            List<Piece> piecesOption = (List<Piece>) request.getSession().getAttribute("userPieces");
-                                            for (Piece piece : piecesOption) {
-                                        %>
+                                        <% for (Piece piece : piecesOption) {  %>
                                         <option><%= piece.getNom() %></option>
                                         <%
                                           }
@@ -97,6 +96,7 @@
 
             <button class="modal-close is-large" aria-label="close"></button>
         </div>
+        <% } %>
 
         <button class="js-modal-trigger button is-primary m-4" data-target="ajout-piece-modal">
             Ajouter une nouvelle pièce
@@ -115,6 +115,7 @@
                 <h2 class="title is-2">Liste des pièces</h2>
                 <%
                   List<Piece> pieces = (List<Piece>) request.getSession().getAttribute("userPieces");
+                  if (pieces != null) {
                   for (Piece piece : pieces) {
                 %>
                 <div class="card m-2">
@@ -126,8 +127,8 @@
                             <form class="mr-3" method="post" action="Configuration">
                                 <input type="hidden" name="deletePiece" value="<%= piece.getId() %>">
                                 <button class="button is-danger is-inverted" type="submit" name="deletePiece">
-                                    <span class="icon is-small">
-                                        <i class="gg-trash"></i>
+                                    <span class="icon">
+                                        <i class="bi bi-trash" style="font-size: 2rem"></i>
                                     </span>
                                 </button>
                             </form>
@@ -135,7 +136,7 @@
                     </div>
                 </div>
                 <%
-                  }
+                  } }
                 %>
             </div>
 
@@ -144,6 +145,7 @@
                 <h2 class="title is-2">Liste des équipements</h2>
                 <%
                   List<Equipement> equipements = (List<Equipement>) request.getSession().getAttribute("userEquipements");
+                  if (equipements != null) {
                   for (Equipement equipement : equipements) {
                 %>
                 <div class="card m-2">
@@ -156,7 +158,7 @@
                                 <input type="hidden" name="deleteEquipement" value="<%= equipement.getId() %>">
                                 <button class="button is-danger is-inverted" type="submit" name="deleteEquipement">
                                     <span class="icon is-small">
-                                        <i class="gg-trash"></i>
+                                        <i class="bi bi-trash" style="font-size: 2rem"></i>
                                     </span>
                                 </button>
                             </form>
@@ -164,7 +166,7 @@
                     </div>
                 </div>
                 <%
-                  }
+                  } }
                 %>
             </div>
         </div>

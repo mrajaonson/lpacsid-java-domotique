@@ -148,7 +148,6 @@ public class Home extends HttpServlet {
         } else {
             response.sendRedirect("Auth");
         }
-
     }
 
     /**
@@ -187,6 +186,8 @@ public class Home extends HttpServlet {
             cookie.setMaxAge(0);
             response.addCookie(cookie);
             session.setAttribute("isAuth", null);
+            session.setAttribute("userEquipements", null);
+            session.setAttribute("userPieces", null);
         }
 
         // Méthode de récupération et de persistance des données.

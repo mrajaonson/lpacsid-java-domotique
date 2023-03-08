@@ -18,6 +18,10 @@
         <servlet-name>Configuration</servlet-name>
         <servlet-class>fr.javacnam.domotique.servlets.Configuration</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Inscription</servlet-name>
+        <servlet-class>fr.javacnam.domotique.servlets.Inscription</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Auth</servlet-name>
         <url-pattern>/Auth</url-pattern>
@@ -29,6 +33,10 @@
     <servlet-mapping>
         <servlet-name>Configuration</servlet-name>
         <url-pattern>/Configuration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Inscription</servlet-name>
+        <url-pattern>/Inscription</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

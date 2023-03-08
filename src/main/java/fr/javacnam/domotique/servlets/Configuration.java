@@ -29,11 +29,11 @@ import java.util.logging.Logger;
  * @author rajaonson
  */
 public class Configuration extends HttpServlet {
-    
+
     private PieceDao pieceDao;
     private EquipementDao equipementDao;
     private TypeEquipementDao typeEquipementDao;
-    
+
     @Override
     public void init() throws ServletException {
         DaoFactory daoFactory;
@@ -58,7 +58,7 @@ public class Configuration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
 
@@ -66,7 +66,7 @@ public class Configuration extends HttpServlet {
         HttpSession session = request.getSession();
         Auth auth = new Auth();
         boolean isAuth = auth.isAuth(session);
-        
+
         if (isAuth) {
             // Récupération du user connecté
             String user = (String) session.getAttribute("user");
@@ -77,12 +77,14 @@ public class Configuration extends HttpServlet {
 
             // Récupération de la liste des pièces
             List<Piece> pieces = this.pieceDao.getAllPieces(user);
-            session.setAttribute("userPieces", pieces);
+            if (!pieces.isEmpty())
+                session.setAttribute("userPieces", pieces);
 
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
-            session.setAttribute("userEquipements", equipements);
-            
+            if (!equipements.isEmpty())
+                session.setAttribute("userEquipements", equipements);
+
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
         } else {
@@ -101,7 +103,7 @@ public class Configuration extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ServletContext contexte = getServletContext();
         RequestDispatcher dispatcher;
 
@@ -109,7 +111,7 @@ public class Configuration extends HttpServlet {
         HttpSession session = request.getSession();
         Auth auth = new Auth();
         boolean isAuth = auth.isAuth(session);
-        
+
         if (isAuth) {
             String user = (String) session.getAttribute("user");
 
@@ -163,12 +165,12 @@ public class Configuration extends HttpServlet {
             // Récupération de la liste des équipements
             List<Equipement> equipements = this.equipementDao.getAllEquipements(user);
             session.setAttribute("userEquipements", equipements);
-            
+
             dispatcher = contexte.getRequestDispatcher("/jsp/configuration.jsp");
             dispatcher.forward(request, response);
         } else {
             response.sendRedirect("Auth");
         }
     }
-    
+
 }

@@ -85,7 +85,7 @@ public class MeteoScheduler implements ServletContextListener {
         public void run() {
             try {
                 System.out.println("Début de la récupération quotidienne de l'api météo");
-                // Meteo
+                // Récupération et persistance en base des données météo
                 Meteo meteo = new Meteo(this.meteoDailyDao1, this.meteoHourlyDao1);
                 meteo.fetchMeteo();
                 meteo.persistMeteo();

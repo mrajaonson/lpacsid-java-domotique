@@ -26,7 +26,40 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void createUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            String query = "INSERT INTO users (username, password) VALUES(?, ?);";
+            preparedStatement = connexion.prepareStatement(query);
+
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("INSERT INTO users " + user.getUsername());
+        } catch (SQLException e) {
+            try {
+                if (connexion != null) {
+                    connexion.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connexion != null) {
+                    connexion.close();
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(EquipementDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
     }
 
     @Override

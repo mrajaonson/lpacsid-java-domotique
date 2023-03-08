@@ -1,8 +1,9 @@
 <%-- 
-    Document   : auth
-    Created on : 21 févr. 2023, 11:20:54
+    Document   : inscription
+    Created on : 8 mars 2023, 15:41:45
     Author     : rajaonson
 --%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,13 +18,11 @@
         <jsp:include page="header-auth.jsp" />
 
         <div class="container" style="width: 30%; margin-top: 5em">
-            <form class="box" action="Auth" method="post">
-                <h1 class="title">Connexion</h1>
-                <!--Message d'erreur en cas de login et/ou mot de passe incorrect-->
-                <p class="is-size-6 has-text-danger">${loginError}</p>
+            <form class="box" action="Inscription" method="post">
+                <h1 class="title">Créer un compte</h1>
                 <div class="field">
                     <p class="control has-icons-left">
-                        <input class="input" type="text" id="login" name="login" required placeholder="Login">
+                        <input class="input" type="text" id="login" name="login" required placeholder="Saisir un nom d'utilisateur">
                         <span class="icon is-left">
                             <i class="bi bi-person" style="font-size: 2rem;"></i>
                         </span>
@@ -31,13 +30,13 @@
                 </div>
                 <div class="field">
                     <p class="control has-icons-left">
-                        <input class="input" type="password" id="pass" name="pass" required placeholder="Mot de passe">
+                        <input class="input" type="password" id="pass" name="pass" required placeholder="Saisir un mot de passe">
                         <span class="icon is-small is-left">
                             <i class="bi bi-lock" style="font-size: 1.8rem;"></i>
                         </span>
                     </p>
                 </div>
-                <input class="button is-success" type="submit" value="Se connecter" name="auth">
+                <input class="button is-success" type="submit" value="Valider" name="inscription">
             </form>
         </div>
 
@@ -45,3 +44,4 @@
         <jsp:include page="footer.jsp" />
     </body>
 </html>
+
