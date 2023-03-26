@@ -1,12 +1,16 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+DROP DATABASE IF EXISTS domotique;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+CREATE DATABASE domotique;
 
+USE domotique;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `equipement`
+--
+
+DROP TABLE IF EXISTS `equipement`;
 CREATE TABLE `equipement` (
   `id` int NOT NULL,
   `utilisateur` varchar(20) NOT NULL,
@@ -17,10 +21,16 @@ CREATE TABLE `equipement` (
   `estConnecte` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Déchargement des données de la table `equipement`
+--
+
 INSERT INTO `equipement` (`id`, `utilisateur`, `piece`, `nom`, `type`, `valeur`, `estConnecte`) VALUES
+(26, 'admin', 'Chambre 1', 'Baie vitrée 2', 'capteur-fenetre', 1, 1),
 (4, 'admin', 'Chambre 1', 'Lampe de chevet 1', 'lumiere', 1, 1),
 (17, 'admin', 'Chambre 1', 'Lampe de chevet 2', 'lumiere', 1, 1),
 (21, 'admin', 'Chambre 1', 'Lumière', 'lumiere', 1, 1),
+(28, 'admin', 'Chambre 1', 'Porte balcon', 'capteur-porte', 1, 1),
 (9, 'admin', 'Chambre 1', 'Radiateur 1', 'radiateur', 19, 1),
 (19, 'admin', 'Chambre 1', 'Volet', 'volet', 0, 1),
 (22, 'admin', 'Chambre 2', 'Lumière', 'lumiere', 0, 1),
@@ -30,8 +40,16 @@ INSERT INTO `equipement` (`id`, `utilisateur`, `piece`, `nom`, `type`, `valeur`,
 (16, 'admin', 'Garage', 'Porte', 'porte-garage', 0, 1),
 (8, 'admin', 'Salon', 'Baie vitrée', 'volet', 0, 1),
 (6, 'admin', 'Salon', 'Lustre 2', 'lumiere', 0, 1),
+(27, 'admin', 'Salon', 'Porte vitrée', 'capteur-porte', 0, 1),
 (10, 'admin', 'Salon', 'Radiateur 1', 'radiateur', 21, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `meteodaily`
+--
+
+DROP TABLE IF EXISTS `meteodaily`;
 CREATE TABLE `meteodaily` (
   `timezone` varchar(20) NOT NULL,
   `time` varchar(20) NOT NULL,
@@ -40,6 +58,10 @@ CREATE TABLE `meteodaily` (
   `sunrise` varchar(20) NOT NULL,
   `sunset` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `meteodaily`
+--
 
 INSERT INTO `meteodaily` (`timezone`, `time`, `temperaturemax`, `temperaturemin`, `sunrise`, `sunset`) VALUES
 ('Europe/Paris', '2023-02-23', 10.8, 6, '07:42', '18:25'),
@@ -58,14 +80,29 @@ INSERT INTO `meteodaily` (`timezone`, `time`, `temperaturemax`, `temperaturemin`
 ('Europe/Paris', '2023-03-08', 13.4, 5.9, '07:17', '18:45'),
 ('Europe/Paris', '2023-03-09', 13.5, 11, '07:15', '18:47'),
 ('Europe/Paris', '2023-03-10', 10.8, 3.5, '07:12', '18:48'),
-('Europe/Paris', '2023-03-11', 6.5, 1, '07:10', '18:50');
+('Europe/Paris', '2023-03-11', 6.5, 1, '07:10', '18:50'),
+('Europe/Paris', '2023-03-26', 12.6, 8.8, '07:39', '20:13'),
+('Europe/Paris', '2023-03-27', 10.8, 4.5, '07:37', '20:14'),
+('Europe/Paris', '2023-03-28', 10.5, 2.2, '07:35', '20:16'),
+('Europe/Paris', '2023-03-29', 18.6, 7.9, '07:33', '20:17');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `meteohourly`
+--
+
+DROP TABLE IF EXISTS `meteohourly`;
 CREATE TABLE `meteohourly` (
   `timezone` varchar(20) NOT NULL,
   `time` varchar(20) NOT NULL,
   `temperature` double NOT NULL,
   `precipitation` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `meteohourly`
+--
 
 INSERT INTO `meteohourly` (`timezone`, `time`, `temperature`, `precipitation`) VALUES
 ('Europe/Paris', '2023-02-23T00:00', 8.7, 0),
@@ -475,13 +512,120 @@ INSERT INTO `meteohourly` (`timezone`, `time`, `temperature`, `precipitation`) V
 ('Europe/Paris', '2023-03-11T20:00', 3.4, 0),
 ('Europe/Paris', '2023-03-11T21:00', 2.5, 0),
 ('Europe/Paris', '2023-03-11T22:00', 2.1, 0),
-('Europe/Paris', '2023-03-11T23:00', 1.6, 0);
+('Europe/Paris', '2023-03-11T23:00', 1.6, 0),
+('Europe/Paris', '2023-03-26T00:00', 11.3, 0),
+('Europe/Paris', '2023-03-26T01:00', 11.1, 0),
+('Europe/Paris', '2023-03-26T02:00', 10.9, 0),
+('Europe/Paris', '2023-03-26T03:00', 10, 0.2),
+('Europe/Paris', '2023-03-26T04:00', 9.7, 0.3),
+('Europe/Paris', '2023-03-26T05:00', 9.7, 0.1),
+('Europe/Paris', '2023-03-26T06:00', 10.1, 0.1),
+('Europe/Paris', '2023-03-26T07:00', 10.3, 0),
+('Europe/Paris', '2023-03-26T08:00', 9.6, 0),
+('Europe/Paris', '2023-03-26T09:00', 9.6, 0),
+('Europe/Paris', '2023-03-26T10:00', 10.1, 0),
+('Europe/Paris', '2023-03-26T11:00', 10.3, 0),
+('Europe/Paris', '2023-03-26T12:00', 9.9, 0),
+('Europe/Paris', '2023-03-26T13:00', 9.8, 0.2),
+('Europe/Paris', '2023-03-26T14:00', 12.5, 0),
+('Europe/Paris', '2023-03-26T15:00', 12.4, 0.6),
+('Europe/Paris', '2023-03-26T16:00', 11.8, 1.1),
+('Europe/Paris', '2023-03-26T17:00', 12.6, 0.1),
+('Europe/Paris', '2023-03-26T18:00', 12, 0),
+('Europe/Paris', '2023-03-26T19:00', 11.2, 0),
+('Europe/Paris', '2023-03-26T20:00', 10.5, 0),
+('Europe/Paris', '2023-03-26T21:00', 9.8, 0),
+('Europe/Paris', '2023-03-26T22:00', 9.3, 0),
+('Europe/Paris', '2023-03-26T23:00', 8.8, 0),
+('Europe/Paris', '2023-03-27T00:00', 7.7, 0),
+('Europe/Paris', '2023-03-27T01:00', 7, 0),
+('Europe/Paris', '2023-03-27T02:00', 6.6, 0),
+('Europe/Paris', '2023-03-27T03:00', 6.2, 0),
+('Europe/Paris', '2023-03-27T04:00', 5.7, 0),
+('Europe/Paris', '2023-03-27T05:00', 5.4, 0),
+('Europe/Paris', '2023-03-27T06:00', 5.1, 0),
+('Europe/Paris', '2023-03-27T07:00', 4.6, 0),
+('Europe/Paris', '2023-03-27T08:00', 4.5, 0),
+('Europe/Paris', '2023-03-27T09:00', 5.1, 0),
+('Europe/Paris', '2023-03-27T10:00', 6.3, 0),
+('Europe/Paris', '2023-03-27T11:00', 7.4, 0),
+('Europe/Paris', '2023-03-27T12:00', 8.5, 0),
+('Europe/Paris', '2023-03-27T13:00', 9.4, 0),
+('Europe/Paris', '2023-03-27T14:00', 10.1, 0),
+('Europe/Paris', '2023-03-27T15:00', 10.6, 0),
+('Europe/Paris', '2023-03-27T16:00', 10.1, 0.1),
+('Europe/Paris', '2023-03-27T17:00', 10.2, 0),
+('Europe/Paris', '2023-03-27T18:00', 10.8, 0),
+('Europe/Paris', '2023-03-27T19:00', 10.5, 0),
+('Europe/Paris', '2023-03-27T20:00', 9.6, 0),
+('Europe/Paris', '2023-03-27T21:00', 8.8, 0),
+('Europe/Paris', '2023-03-27T22:00', 8.1, 0),
+('Europe/Paris', '2023-03-27T23:00', 7.3, 0),
+('Europe/Paris', '2023-03-28T00:00', 6.2, 0),
+('Europe/Paris', '2023-03-28T01:00', 5.6, 0),
+('Europe/Paris', '2023-03-28T02:00', 5.1, 0),
+('Europe/Paris', '2023-03-28T03:00', 4.7, 0),
+('Europe/Paris', '2023-03-28T04:00', 4.2, 0),
+('Europe/Paris', '2023-03-28T05:00', 3.8, 0),
+('Europe/Paris', '2023-03-28T06:00', 3.6, 0),
+('Europe/Paris', '2023-03-28T07:00', 3.3, 0),
+('Europe/Paris', '2023-03-28T08:00', 3.5, 0),
+('Europe/Paris', '2023-03-28T09:00', 2.2, 0),
+('Europe/Paris', '2023-03-28T10:00', 3.5, 0),
+('Europe/Paris', '2023-03-28T11:00', 5.2, 0),
+('Europe/Paris', '2023-03-28T12:00', 6.9, 0),
+('Europe/Paris', '2023-03-28T13:00', 7.9, 0),
+('Europe/Paris', '2023-03-28T14:00', 8.5, 0),
+('Europe/Paris', '2023-03-28T15:00', 9.4, 0),
+('Europe/Paris', '2023-03-28T16:00', 10.2, 0),
+('Europe/Paris', '2023-03-28T17:00', 10.5, 0),
+('Europe/Paris', '2023-03-28T18:00', 10.4, 0),
+('Europe/Paris', '2023-03-28T19:00', 10.2, 0),
+('Europe/Paris', '2023-03-28T20:00', 9.7, 0),
+('Europe/Paris', '2023-03-28T21:00', 8.9, 0),
+('Europe/Paris', '2023-03-28T22:00', 8.3, 0),
+('Europe/Paris', '2023-03-28T23:00', 8, 0),
+('Europe/Paris', '2023-03-29T00:00', 7.9, 0),
+('Europe/Paris', '2023-03-29T01:00', 8.1, 0),
+('Europe/Paris', '2023-03-29T02:00', 8.4, 0),
+('Europe/Paris', '2023-03-29T03:00', 8.8, 0),
+('Europe/Paris', '2023-03-29T04:00', 8.8, 0.1),
+('Europe/Paris', '2023-03-29T05:00', 8.7, 0),
+('Europe/Paris', '2023-03-29T06:00', 8.6, 0.1),
+('Europe/Paris', '2023-03-29T07:00', 8.7, 0.2),
+('Europe/Paris', '2023-03-29T08:00', 8.6, 0),
+('Europe/Paris', '2023-03-29T09:00', 9, 0),
+('Europe/Paris', '2023-03-29T10:00', 9.8, 0),
+('Europe/Paris', '2023-03-29T11:00', 11, 0),
+('Europe/Paris', '2023-03-29T12:00', 12.5, 0),
+('Europe/Paris', '2023-03-29T13:00', 13.8, 0),
+('Europe/Paris', '2023-03-29T14:00', 15.2, 0),
+('Europe/Paris', '2023-03-29T15:00', 16.7, 0),
+('Europe/Paris', '2023-03-29T16:00', 18, 0),
+('Europe/Paris', '2023-03-29T17:00', 18.6, 0),
+('Europe/Paris', '2023-03-29T18:00', 18.3, 0),
+('Europe/Paris', '2023-03-29T19:00', 16.5, 0.1),
+('Europe/Paris', '2023-03-29T20:00', 16.1, 0),
+('Europe/Paris', '2023-03-29T21:00', 15.8, 0),
+('Europe/Paris', '2023-03-29T22:00', 16, 0),
+('Europe/Paris', '2023-03-29T23:00', 16.1, 0);
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `piece`
+--
+
+DROP TABLE IF EXISTS `piece`;
 CREATE TABLE `piece` (
   `id` int NOT NULL,
   `utilisateur` varchar(20) NOT NULL,
   `nom` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `piece`
+--
 
 INSERT INTO `piece` (`id`, `utilisateur`, `nom`) VALUES
 (3, 'admin', 'Chambre 1'),
@@ -492,9 +636,20 @@ INSERT INTO `piece` (`id`, `utilisateur`, `nom`) VALUES
 (10, 'admin', 'Chambre 3'),
 (11, 'admin', 'Garage');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `typeequipement`
+--
+
+DROP TABLE IF EXISTS `typeequipement`;
 CREATE TABLE `typeequipement` (
   `type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `typeequipement`
+--
 
 INSERT INTO `typeequipement` (`type`) VALUES
 ('capteur-fenetre'),
@@ -505,49 +660,93 @@ INSERT INTO `typeequipement` (`type`) VALUES
 ('radiateur'),
 ('volet');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Déchargement des données de la table `users`
+--
+
 INSERT INTO `users` (`username`, `password`) VALUES
 ('admin', 'admin123'),
 ('toto', 'toto123');
 
+--
+-- Index pour les tables déchargées
+--
 
+--
+-- Index pour la table `equipement`
+--
 ALTER TABLE `equipement`
   ADD PRIMARY KEY (`utilisateur`,`piece`,`nom`),
   ADD UNIQUE KEY `id` (`id`),
   ADD KEY `fk_type_equipement` (`type`);
 
+--
+-- Index pour la table `meteodaily`
+--
 ALTER TABLE `meteodaily`
   ADD PRIMARY KEY (`timezone`,`time`) USING BTREE;
 
+--
+-- Index pour la table `meteohourly`
+--
 ALTER TABLE `meteohourly`
   ADD PRIMARY KEY (`timezone`,`time`);
 
+--
+-- Index pour la table `piece`
+--
 ALTER TABLE `piece`
   ADD PRIMARY KEY (`utilisateur`,`nom`),
   ADD UNIQUE KEY `id` (`id`);
 
+--
+-- Index pour la table `typeequipement`
+--
 ALTER TABLE `typeequipement`
   ADD PRIMARY KEY (`type`);
 
+--
+-- Index pour la table `users`
+--
 ALTER TABLE `users`
   ADD PRIMARY KEY (`username`);
 
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
 
+--
+-- AUTO_INCREMENT pour la table `equipement`
+--
 ALTER TABLE `equipement`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
+--
+-- AUTO_INCREMENT pour la table `piece`
+--
 ALTER TABLE `piece`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
+--
+-- Contraintes pour les tables déchargées
+--
 
+--
+-- Contraintes pour la table `equipement`
+--
 ALTER TABLE `equipement`
   ADD CONSTRAINT `fk_piece` FOREIGN KEY (`utilisateur`,`piece`) REFERENCES `piece` (`utilisateur`, `nom`),
   ADD CONSTRAINT `fk_type_equipement` FOREIGN KEY (`type`) REFERENCES `typeequipement` (`type`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+COMMIT;

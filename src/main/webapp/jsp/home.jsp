@@ -178,6 +178,26 @@
                                     <% for (Equipement equipement : equipements) {
                                         if (equipement.getType().equals(typeEquipement.getType())) { %>
                                     <div class="columns is-vcentered">
+                                        <%-- cas d'un équipement "capteur-porte" --%>
+                                        <% if (equipement.getType().equals("capteur-porte")) { %>
+                                        <% String iconClass = equipement.getValeur() > 0 ? "bi bi-unlock-fill has-text-danger" : "bi bi-lock-fill has-text-warning";%>
+                                        <div class="column is-1">
+                                            <span class="icon">
+                                                <i class="<%= iconClass %>" style="font-size: 1.8rem;"></i>
+                                            </span>
+                                        </div>
+                                        <% } %>
+
+                                        <%-- cas d'un équipement "capteur-fenetre" --%>
+                                        <% if (equipement.getType().equals("capteur-fenetre")) { %>
+                                        <% String iconClass = equipement.getValeur() > 0 ? "bi bi-unlock-fill has-text-danger" : "bi bi-lock-fill has-text-warning";%>
+                                        <div class="column is-1">
+                                            <span class="icon">
+                                                <i class="<%= iconClass %>" style="font-size: 1.8rem;"></i>
+                                            </span>
+                                        </div>
+                                        <% } %>
+
                                         <%-- cas d'un équipement "lumière" --%>
                                         <% if (equipement.getType().equals("lumiere")) { %>
                                         <% String iconClass = equipement.getValeur() > 0 ? "bi bi-lightbulb-fill has-text-warning" : "bi bi-lightbulb-off";%>
@@ -205,7 +225,8 @@
                                         </div>
                                         <% } %>
                                         <div class="column">
-                                            <%= equipement.getPiece() %> - <%= equipement.getNom() %>
+                                            <p><%= equipement.getPiece() %></p>
+                                            <p><%= equipement.getNom() %></p>
                                         </div>
                                         <div class="column">
                                             <%-- cas d'un équipement "lumière" --%>

@@ -162,6 +162,15 @@ public class Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, FileNotFoundException {
+        System.out.println("Récupération de l'api météo");
+        // Meteo
+        Meteo meteo = new Meteo(this.meteoDailyDao, this.meteoHourlyDao);
+        meteo.fetchMeteo();
+        try {
+            meteo.persistMeteo();
+        } catch (ParseException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
         processRequest(request, response);
     }
 
