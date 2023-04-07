@@ -1,6 +1,8 @@
 # Application de domotique
 
-## Environnement testé
+Projet Java - Interface graphique d'une application de domotique
+
+## Prérequis
 * Apache tomcat 10.1.5
 * MySQL Community Server 8.0.32
 
